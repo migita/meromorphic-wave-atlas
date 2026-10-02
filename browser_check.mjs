@@ -38,6 +38,32 @@ try{
   }
   const counts=await evaluate('({slices:ATLAS.length,pairs:ATLAS.filter(m=>m.primary).length,cards:document.querySelectorAll(".card").length})');
   if(counts.slices!==19||counts.pairs!==13||counts.cards!==19)throw new Error(JSON.stringify(counts));
+  const ks=await evaluate(`(()=>{
+    choose(ATLAS.findIndex(m=>m.slug==='n2_p4_kawahara'));
+    document.getElementById('profileMode').value='axis';document.getElementById('profileMode').dispatchEvent(new Event('change'));
+    choose(ATLAS.findIndex(m=>m.slug==='n2_p3_ks'));
+    const m=ATLAS[current],initial=m.frames[+slider.value].t;
+    if(initial!==-13||lastProfile.mode!=='regular'||lastProfile.poles.length||lastProfile.constant)throw Error('KS inherited a singular view');
+    const period=lastProfile.period,mean=lastProfile.mean;
+    if(Math.abs(period-6.901643615339256)>1e-9)throw Error('Wrong smooth KS period');
+    toParameter(-19);if(lastProfile.mode!=='axis'||!lastProfile.poles.length)throw Error('KS outside interval should be singular');
+    toParameter(-13);if(lastProfile.mode!=='regular'||lastProfile.poles.length)throw Error('KS did not return to its pole-free slice');
+    toParameter(-18);if(lastProfile.mode!=='regular'||lastProfile.period!==null||lastProfile.constant)throw Error('Wrong KS pulse limit');
+    toParameter(-8);if(!lastProfile.constant||Math.abs(lastProfile.mean-4)>1e-10)throw Error('Wrong KS constant limit');
+    document.getElementById('profileMode').value='axis';document.getElementById('profileMode').dispatchEvent(new Event('change'));
+    document.querySelector('[data-parameter="-13"]').click();
+    if(lastProfile.mode!=='regular'||lastProfile.poles.length)throw Error('Smooth KS shortcut did not reset the slice');
+    return {parameter:initial,period,mean,poles:0,family_view_reset:true,shortcuts:true};
+  })()`);
+  const sceneLinks=await evaluate(`(async()=>{
+    location.hash='family=n2_p3_ks&parameter=-13&view=axis';
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    if(ATLAS[current].slug!=='n2_p3_ks'||lastProfile.mode!=='axis'||!lastProfile.poles.length)throw Error('Axis scene link failed');
+    location.hash='family=n2_p3_ks&parameter=-13&view=regular';
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    if(ATLAS[current].slug!=='n2_p3_ks'||lastProfile.mode!=='regular'||lastProfile.poles.length)throw Error('Smooth scene link failed');
+    return {axis:true,regular:true};
+  })()`);
   const checked=[];
   for(let i=0;i<counts.slices;i++){
     const result=await evaluate(`(()=>{choose(${i});const m=ATLAS[${i}],out=[];for(const f of [0,.5,1]){slider.value=Math.floor((m.frames.length-1)*f);slider.dispatchEvent(new Event('input'));const points=m.frames[+slider.value].points;if(points.length&&(!lastProfile||!lastProfile.range.every(Number.isFinite)))throw Error('Missing wave profile');out.push({count:document.getElementById('count').textContent,profile:lastProfile?{mode:lastProfile.mode,constant:lastProfile.constant,period:lastProfile.period}:null});}slider.value=Math.floor(m.frames.length/2);update();const points=m.frames[+slider.value].points;for(const pt of points){selectedBranch=pt.branch;update();if(points[selected].branch!==pt.branch||!lastProfile)throw Error('Wrong selected branch');}return {slug:m.slug,readouts:out,branches:points.length};})()`);
@@ -58,10 +84,10 @@ try{
   if(mobile.document>391||mobile.width>391)throw new Error('Mobile horizontal overflow: '+JSON.stringify(mobile));
   const mobileScreen=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(screenshots,'mobile.png'),Buffer.from(mobileScreen.data,'base64'));
   if(errors.length)throw new Error('JavaScript errors: '+JSON.stringify(errors));
-  const report={status:'PASS',public_url:process.env.ATLAS_URL||null,...counts,checked,kawahara,limits,mobile,missing_links:missing,javascript_errors:errors};
+  const report={status:'PASS',public_url:process.env.ATLAS_URL||null,...counts,checked,kawahara,limits,ks,sceneLinks,mobile,missing_links:missing,javascript_errors:errors};
   const reportPath=process.env.ATLAS_URL?'live_site_check.json':'browser_check.json';
   fs.writeFileSync(path.join(here,'data',reportPath),JSON.stringify(report,null,2)+'\n');
-  console.log('PASS: 19 families with solution plots, 57 slider positions, branch changes, pulse/constant/trigonometric limits, links, desktop and mobile.');
+  console.log('PASS: KS family-switch regression, smooth/singular intervals, endpoint shortcuts, scene links, 19 families, desktop and mobile.');
 }finally{
   if(socket)socket.close();proc.kill();
   await new Promise(resolve=>proc.once('exit',resolve));

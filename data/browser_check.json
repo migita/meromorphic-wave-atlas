@@ -581,6 +581,18 @@
     "upper_regular_mean": 2,
     "trigonometric_poles": 3
   },
+  "ks": {
+    "parameter": -13,
+    "period": 6.901643615339256,
+    "mean": 2.9572734735695017,
+    "poles": 0,
+    "family_view_reset": true,
+    "shortcuts": true
+  },
+  "sceneLinks": {
+    "axis": true,
+    "regular": true
+  },
   "mobile": {
     "width": 390,
     "document": 390,

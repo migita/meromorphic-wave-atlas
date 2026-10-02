@@ -52,7 +52,7 @@
 <script>
 const ATLAS=__ATLAS_DATA__;
 const $=id=>document.getElementById(id), family=$('family'), slider=$('position'), canvas=$('plot'), ctx=canvas.getContext('2d');
-let current=0, selected=0, selectedBranch=null, preferredProfileMode='regular', lastProfile=null;
+let current=0, selected=0, selectedBranch=null, preferredProfileMode='regular', lastProfile=null, restoringScene=false;
 const fmt=x=>x==null?'—':Number(x).toPrecision(6).replace(/\.?0+(e|$)/,'$1');
 const superscript=x=>String(x).split('').map(c=>({'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'}[c]||c)).join('');
 const palette=[[23,121,137],[75,143,156],[190,170,128],[229,151,97],[173,60,99]];
@@ -110,6 +110,10 @@ function drawWave(){
   $('waveLegend').innerHTML=p.anyImag?`<span><i class="swatch real-line"></i>Re ${spec.variable}</span><span><i class="swatch imag-line"></i>Im ${spec.variable}</span>`:`<span><i class="swatch real-line"></i>${spec.variable}(z)</span>`;
   let note=p.constant?'Constant limit of the regular slice. Choose “Meromorphic real axis” to see the nonconstant degenerate solution.':p.mode==='axis'?'Real-axis meromorphic profile. Dashed vertical lines mark poles; the vertical range is clipped.':p.anyImag?'A complex-valued solution on a pole-free real-parameter slice; both components are shown.':spec.geometry.period===null?'Regular hyperbolic degeneration, shown on a finite spatial window.':'Smooth real periodic solution. The dashed horizontal line is its period average.';
   if(preferredProfileMode==='regular'&&spec.geometry.type==='one')note='This lattice has no bounded real oval. '+note;
+  if(m.slug==='n2_p3_ks'){
+    if(frame.t>-18&&frame.t<-8&&p.mode==='axis')note+=' A smooth real periodic representative is available: choose “Pole-free slice”.';
+    if(frame.t<-18-1e-10||frame.t>-8+1e-10)note+=' For this KS family, the smooth periodic interval is −18 < C < −8.';
+  }
   $('profileNote').textContent=note;
   let stats=`<div><span>${p.constant?'Profile':'Full real period'}</span><strong>${p.constant?'Constant limit':p.period?fmt(p.period):spec.geometry.type==='rational'?'Rational':'∞'}</strong></div>`;
   if(p.amplitude!==null)stats+=`<div><span>Peak-to-trough amplitude</span><strong>${fmt(p.amplitude)}</strong></div>`;
@@ -124,15 +128,44 @@ function update(){const m=ATLAS[current],frame=m.frames[+slider.value];
   $('paramValue').value=fmt(frame.t);const n=frame.points.length;
   $('count').textContent=m.fixed_equation?'One fixed equation · infinitely many energy levels':m.count_kind==='equations'?`${n} real compatible coefficient choice${n===1?'':'s'} at this parameter`:`${n} distinct real lattice solution${n===1?'':'s'} at this parameter`;
   $('points').innerHTML=n?'<table><thead><tr><th>Wave</th><th>g₂</th><th>g₃</th><th>Δ</th></tr></thead><tbody>'+frame.points.map((p,i)=>{let scale=Math.max(Math.abs(p.g2**3),Math.abs(27*p.g3*p.g3),1e-40),sign=Math.abs(p.delta)/scale<1e-7?'0':p.delta>0?'> 0':'< 0';return `<tr><td><button class="point" data-index="${i}">${i===selected?'● ':''}${i+1} · χ order ${p.character}</button></td><td>${fmt(p.g2)}</td><td>${fmt(p.g3)}</td><td>${sign}</td></tr>`;}).join('')+'</tbody></table>':'';
-  $('points').querySelectorAll('button').forEach(b=>b.onclick=()=>{selectedBranch=frame.points[+b.dataset.index].branch;update()});$('equation').textContent=equation(frame.points[selected],m);draw();drawWave();
+  $('points').querySelectorAll('button').forEach(b=>b.onclick=()=>{selectedBranch=frame.points[+b.dataset.index].branch;update()});$('equation').textContent=equation(frame.points[selected],m);draw();drawWave();saveSceneLink();
 }
 function toParameter(value){const m=ATLAS[current];let nearest=0;for(let j=1;j<m.frames.length;j++)if(Math.abs(m.frames[j].t-value)<Math.abs(m.frames[nearest].t-value))nearest=j;slider.value=nearest;update();}
-function choose(index){current=index;selected=0;selectedBranch=null;const m=ATLAS[index];family.value=String(index);$('currentTitle').textContent=m.title;$('badge').textContent=`(n, p) = (${m.n}, ${m.p}) · q = ${m.q}`;$('paramLabel').textContent=m.parameter;slider.max=m.frames.length-1;slider.value=Math.floor(m.frames.length*.5);$('notes').innerHTML=m.notes.map(n=>`<p>${n}</p>`).join('')+`<p><a href="figures/${m.slug}.png">Full plate and enlarged detail ↗</a> · <a href="data/${m.slug}.csv">CSV</a></p>`;$('shortcuts').innerHTML=m.slug==='n2_p4_kawahara'?'<button data-a="-2.1666666666666665">Solitary limit · a = −13/6</button><button data-a="0">a = 0</button><button data-a="2.1666666666666665">Upper contact · a = 13/6</button>':'';$('shortcuts').querySelectorAll('button').forEach(b=>b.onclick=()=>{preferredProfileMode='regular';toParameter(+b.dataset.a)});update();}
+function choose(index){
+  current=index;selected=0;selectedBranch=null;preferredProfileMode='regular';
+  const m=ATLAS[index];family.value=String(index);$('currentTitle').textContent=m.title;$('badge').textContent=`(n, p) = (${m.n}, ${m.p}) · q = ${m.q}`;$('paramLabel').textContent=m.parameter;
+  slider.max=m.frames.length-1;slider.value=Math.floor(m.frames.length*.5);
+  $('notes').innerHTML=m.notes.map(n=>`<p>${n}</p>`).join('')+`<p><a href="figures/${m.slug}.png">Full plate and enlarged detail ↗</a> · <a href="data/${m.slug}.csv">CSV</a></p>`;
+  const shortcuts=m.slug==='n2_p4_kawahara'?[[-13/6,'Solitary limit · a = −13/6'],[0,'a = 0'],[13/6,'Upper contact · a = 13/6']]:
+    m.slug==='n2_p3_ks'?[[-18,'Pulse limit · C = −18'],[-13,'Smooth periodic · C = −13'],[-8,'Constant limit · C = −8']]:[];
+  $('shortcuts').innerHTML=shortcuts.map(([v,label])=>`<button data-parameter="${v}">${label}</button>`).join('');
+  $('shortcuts').querySelectorAll('button').forEach(b=>b.onclick=()=>{preferredProfileMode='regular';toParameter(+b.dataset.parameter)});update();
+}
+function saveSceneLink(){
+  if(restoringScene)return;
+  const m=ATLAS[current],frame=m.frames[+slider.value],p=new URLSearchParams({family:m.slug,parameter:String(frame.t),view:preferredProfileMode});
+  if(frame.points[selected])p.set('branch',String(frame.points[selected].branch));
+  try{history.replaceState(null,'','#'+p.toString())}catch(error){/* Some file viewers disallow history changes. */}
+}
+function restoreSceneLink(){
+  const p=new URLSearchParams(location.hash.slice(1)),index=ATLAS.findIndex(m=>m.slug===p.get('family'));
+  if(index<0)return false;
+  restoringScene=true;
+  try{
+    choose(index);
+    if(p.has('parameter')&&Number.isFinite(Number(p.get('parameter'))))toParameter(Number(p.get('parameter')));
+    preferredProfileMode=p.get('view')==='axis'?'axis':'regular';
+    if(p.has('branch')&&Number.isFinite(Number(p.get('branch'))))selectedBranch=Number(p.get('branch'));
+    update();
+  }finally{restoringScene=false;}
+  saveSceneLink();return true;
+}
 function hitPoint(event){const m=ATLAS[current],rect=canvas.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top,[[x0,x1],[y0,y1]]=m.limits;let best=null,dist=18;for(const point of m.frames[+slider.value].points){const px=76+(point.g2-x0)/(x1-x0)*(rect.width-91),py=18+(y1-point.g3)/(y1-y0)*(rect.height-78),d=Math.hypot(px-x,py-y);if(d<dist){best=point;dist=d;}}return best;}
 canvas.onclick=event=>{const point=hitPoint(event);if(point){selectedBranch=point.branch;update()}};canvas.onmousemove=event=>{canvas.style.cursor=hitPoint(event)?'pointer':'default'};canvas.title='Click a lattice point to plot its solution';
 ATLAS.forEach((m,i)=>{const option=document.createElement('option');option.value=i;option.textContent=`(${m.n},${m.p}) ${m.title}`;family.appendChild(option)});
-family.onchange=()=>choose(+family.value);slider.oninput=update;$('profileMode').onchange=()=>{preferredProfileMode=$('profileMode').value;drawWave()};new ResizeObserver(()=>{draw();drawWave()}).observe(canvas);
-function cards(){const val=$('filter').value;$('gallery').innerHTML=ATLAS.filter(m=>val==='all'||m.p===+val).map(m=>`<article class="card"><a href="figures/${m.slug}.png"><img loading="lazy" src="figures/${m.slug}.png" alt="${m.title}: its g2,g3 lattice locus, enlarged detail, and count"></a><div class="cardbody"><div class="title">${m.title}</div><p>(n, p) = (${m.n}, ${m.p}) · ${m.primary?'main atlas':'companion slice'}</p><div class="cardlinks"><a href="figures/${m.slug}.png">PNG</a><a href="figures/${m.slug}.svg">SVG</a><a href="figures/${m.slug}.pdf">PDF</a><a href="#currentTitle" data-explore="${ATLAS.indexOf(m)}">Explore</a></div></div></article>`).join('');$('gallery').querySelectorAll('[data-explore]').forEach(a=>a.onclick=()=>choose(+a.dataset.explore));}
-$('filter').onchange=cards;cards();let table='<tr><th>n \\ p</th>'+[2,3,4,5,6].map(p=>`<th>${p}</th>`).join('')+'</tr>';for(let n=2;n<=7;n++){table+=`<tr><th>${n}</th>`;for(let p=2;p<=6;p++){const m=ATLAS.find(m=>m.n===n&&m.p===p&&m.primary);table+=m?`<td class="yes"><a href="figures/${m.slug}.png">${p/(n-1)}</a></td>`:'<td>—</td>';}table+='</tr>';}$('coverage').innerHTML=table;choose(ATLAS.findIndex(m=>m.slug==='n2_p4_kawahara'));
+family.onchange=()=>choose(+family.value);slider.oninput=update;$('profileMode').onchange=()=>{preferredProfileMode=$('profileMode').value;drawWave();saveSceneLink()};new ResizeObserver(()=>{draw();drawWave()}).observe(canvas);
+window.addEventListener('hashchange',restoreSceneLink);
+function cards(){const val=$('filter').value;$('gallery').innerHTML=ATLAS.filter(m=>val==='all'||m.p===+val).map(m=>`<article class="card"><a href="figures/${m.slug}.png"><img loading="lazy" src="figures/${m.slug}.png" alt="${m.title}: its g2,g3 lattice locus, enlarged detail, and count"></a><div class="cardbody"><div class="title">${m.title}</div><p>(n, p) = (${m.n}, ${m.p}) · ${m.primary?'main atlas':'companion slice'}</p><div class="cardlinks"><a href="figures/${m.slug}.png">PNG</a><a href="figures/${m.slug}.svg">SVG</a><a href="figures/${m.slug}.pdf">PDF</a><a href="#currentTitle" data-explore="${ATLAS.indexOf(m)}">Explore</a></div></div></article>`).join('');$('gallery').querySelectorAll('[data-explore]').forEach(a=>a.onclick=event=>{event.preventDefault();choose(+a.dataset.explore);$('currentTitle').scrollIntoView({block:'start',behavior:'smooth'})});}
+$('filter').onchange=cards;cards();let table='<tr><th>n \\ p</th>'+[2,3,4,5,6].map(p=>`<th>${p}</th>`).join('')+'</tr>';for(let n=2;n<=7;n++){table+=`<tr><th>${n}</th>`;for(let p=2;p<=6;p++){const m=ATLAS.find(m=>m.n===n&&m.p===p&&m.primary);table+=m?`<td class="yes"><a href="figures/${m.slug}.png">${p/(n-1)}</a></td>`:'<td>—</td>';}table+='</tr>';}$('coverage').innerHTML=table;if(!restoreSceneLink())choose(ATLAS.findIndex(m=>m.slug==='n2_p4_kawahara'));
 </script>
 </html>

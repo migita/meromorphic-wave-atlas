@@ -14,6 +14,12 @@ show the solitary pulse, the constant small-amplitude limit, and the nonconstant
 degeneration. Kawahara is displayed in physical normalization `v=−1680u`, matching the separate
 physical-coordinate example; other profiles solve their displayed normalization.
 
+Newly selected families start in the pole-free view when it is available. For the dispersive
+Kuramoto–Sivashinsky family, smooth real periodic profiles occur for `−18<C<−8`.
+[Open the smooth KS example at C=−13](https://migita.github.io/meromorphic-wave-atlas/#family=n2_p3_ks&parameter=-13&view=regular).
+Choosing “Meromorphic real axis” instead places the canonical poles on the plotted line. The
+address-bar link records the current family, parameter, branch, and slice for sharing.
+
 This repository is self-contained: all assets are local, and the small exact torsion-divisor
 constructor is included in `elliptic_divisor.py`. The static site is served from the root of `main`
 by GitHub Pages, with `.nojekyll`; opening `index.html` directly also works offline.
