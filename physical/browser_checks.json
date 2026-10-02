@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "label": "a = 2.1666",
+      "wavelength": 15.390611408595174,
+      "amplitude": 0.024999286830195682,
+      "mean": 1.9999626898876353,
+      "meanLine": 1.9999626898876353,
+      "sampledAmplitude": 0.024999275094450102,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = 2.16",
+      "wavelength": 15.39104275186448,
+      "amplitude": 0.2582849260301216,
+      "mean": 1.9964080510268079,
+      "meanLine": 1.9964080510268079,
+      "sampledAmplitude": 0.2582848960770654,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = 2.1",
+      "wavelength": 15.371814935074735,
+      "amplitude": 0.8234244019243607,
+      "mean": 1.9676860374399254,
+      "meanLine": 1.9676860374399254,
+      "sampledAmplitude": 0.8234210023377195,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = 2",
+      "wavelength": 15.294491015011598,
+      "amplitude": 1.2755772160369232,
+      "mean": 1.926695599301033,
+      "meanLine": 1.926695599301033,
+      "sampledAmplitude": 1.275561105814478,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = 1",
+      "wavelength": 14.063696029811252,
+      "amplitude": 2.516145260510735,
+      "mean": 1.5751269223308435,
+      "meanLine": 1.5751269223308435,
+      "sampledAmplitude": 2.516123843803727,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = 0",
+      "wavelength": 13.025840743239492,
+      "amplitude": 2.7583864218368523,
+      "mean": 1.1838924281224568,
+      "meanLine": 1.1838924281224568,
+      "sampledAmplitude": 2.758386421836841,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = -1",
+      "wavelength": 12.17919377621837,
+      "amplitude": 2.761476211174179,
+      "mean": 0.7850369752215918,
+      "meanLine": 0.7850369752215918,
+      "sampledAmplitude": 2.7614732294732125,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = -1.5",
+      "wavelength": 12.04702089964063,
+      "amplitude": 2.600429454633077,
+      "mean": 0.6060495930816214,
+      "meanLine": 0.6060495930816214,
+      "sampledAmplitude": 2.600427579889451,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = -2",
+      "wavelength": 12.852171725560998,
+      "amplitude": 2.5278987935310018,
+      "mean": 0.5497620092975205,
+      "meanLine": 0.5497620092975205,
+      "sampledAmplitude": 2.52789792997202,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = -2.16",
+      "wavelength": 16.33750423282788,
+      "amplitude": 2.8091612444429983,
+      "mean": 0.8339038234897326,
+      "meanLine": 0.8339038234897326,
+      "sampledAmplitude": 2.809160131452504,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = -2.1667",
+      "wavelength": 24.71883603107403,
+      "amplitude": 2.9128912800079267,
+      "mean": 1.229267147747502,
+      "meanLine": 1.229267147747502,
+      "sampledAmplitude": 2.912890984655947,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = −13/6 + 1.0e-10",
+      "wavelength": 38.32030520582726,
+      "amplitude": 2.9166516989968008,
+      "mean": 1.5028331119172942,
+      "meanLine": 1.5028331119172942,
+      "sampledAmplitude": 2.916651698969364,
+      "profilePoints": 1601
+    },
+    {
+      "label": "a = −13/6 + 1.0e-30",
+      "wavelength": 94.7218818281091,
+      "amplitude": 2.916666666666665,
+      "mean": 1.7988681546373166,
+      "meanLine": 1.7988681546373166,
+      "sampledAmplitude": 2.916666665592678,
+      "profilePoints": 1601
+    }
+  ],
+  "missing_links": [],
+  "javascript_errors": []
+}

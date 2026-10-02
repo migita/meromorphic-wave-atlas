@@ -1,0 +1,808 @@
+[
+  {
+    "slug": "n2_p2_kdv",
+    "n": 2,
+    "p": 2,
+    "q": 2,
+    "title": "KdV · the free-energy line",
+    "equation": "u''-u-6u^2=0",
+    "parameter": "energy coordinate  h",
+    "interval": [
+      -2.2,
+      2.2
+    ],
+    "branches": [
+      {
+        "g2": "1/12",
+        "g3": "t/216",
+        "operator": {
+          "0": "-1"
+        },
+        "profile": "X - 1/12",
+        "character": 1,
+        "constant": "0"
+      }
+    ],
+    "notes": [
+      "One fixed equation carries a continuum of lattices; h = 216 g₃ is its first-integral parameter.",
+      "The endpoints h = ±1 are degenerations. The open segment between them has Δ > 0."
+    ],
+    "count_kind": "waves",
+    "primary": true,
+    "fixed_equation": true
+  },
+  {
+    "slug": "n3_p2_mkdv",
+    "n": 3,
+    "p": 2,
+    "q": 1,
+    "title": "mKdV · a tilted energy line",
+    "equation": "u''-u-2u^3=0",
+    "parameter": "energy coordinate  h",
+    "interval": [
+      -1,
+      2.5
+    ],
+    "branches": [
+      {
+        "g2": "t",
+        "g3": "4/27 - t/3",
+        "operator": {
+          "0": "-1"
+        },
+        "profile": "sqrt(X-1/3)",
+        "character": 2,
+        "constant": "0"
+      }
+    ],
+    "notes": [
+      "Again the equation is fixed: the energy is free. The plotted lattice is the lattice of u².",
+      "u = √(℘ − 1/3) has a character of order two; its ordinary period cell is twice as large."
+    ],
+    "count_kind": "waves",
+    "primary": true,
+    "fixed_equation": true
+  },
+  {
+    "slug": "n2_p3_ks",
+    "n": 2,
+    "p": 3,
+    "q": 3,
+    "title": "Kuramoto–Sivashinsky",
+    "equation": "v'''+4v''+v'+v^2/2+C=0",
+    "parameter": "integration constant  C",
+    "interval": [
+      -26,
+      0
+    ],
+    "branches": [
+      {
+        "g2": "1/12",
+        "g3": "t/1080 + 13/1080",
+        "operator": {
+          "2": "4",
+          "1": "1"
+        },
+        "profile": "-60*Y-60*X-1",
+        "character": 1,
+        "constant": "t",
+        "physical_profile": true
+      }
+    ],
+    "notes": [
+      "One meromorphic wave per fixed C. Elliptic waves require b² = 16a in the general KS operator.",
+      "C = −18 and −8 are the two degenerations; only the interval between them has Δ > 0."
+    ],
+    "count_kind": "waves",
+    "primary": true
+  },
+  {
+    "slug": "n4_p3_quartic",
+    "n": 4,
+    "p": 3,
+    "q": 1,
+    "title": "Quartic flux · a threefold character",
+    "equation": "P(D)u+6u^{4}=0,\\quad a_{2}=1",
+    "parameter": "torsion parameter  t",
+    "interval": [
+      -0.035,
+      0.095
+    ],
+    "branches": [
+      {
+        "g2": "-(24*t - 1)/192",
+        "g3": "-(216*t**2 - 36*t + 1)/13824",
+        "operator": {
+          "2": "1",
+          "1": "1/12",
+          "0": "(54*t - 5)/108"
+        },
+        "profile": "(12*X - 12*Y + 12*t - 1)/24",
+        "character": 3,
+        "constant": "0",
+        "profile_kind": "tate_root",
+        "tate_order": 3,
+        "rate": "-1/2",
+        "unscaled_F": "(12*X - 12*Y + 12*t - 1)/24",
+        "unscaled_g2": "-(24*t - 1)/12",
+        "unscaled_g3": "-(216*t**2 - 36*t + 1)/216",
+        "unscaled_operator": {
+          "2": "-2",
+          "1": "1/3",
+          "0": "-2*(54*t - 5)/27"
+        }
+      }
+    ],
+    "notes": [
+      "The normalized operator is D³ + D² + D/12 + (54t − 5)/108; one wave per equation.",
+      "A parabola of lattices. Its two real degeneration parameters are t = 0 and t = 1/27."
+    ],
+    "count_kind": "waves",
+    "primary": true
+  },
+  {
+    "slug": "n2_p4_kawahara",
+    "n": 2,
+    "p": 4,
+    "q": 4,
+    "title": "Kawahara · the returning loop",
+    "equation": "u''''+a u''-u-840u^2=0",
+    "parameter": "dispersion coefficient  a",
+    "interval": [
+      -2.8,
+      2.8
+    ],
+    "branches": [
+      {
+        "g2": "t**2/2028 - sqrt(75647604142656 - 3432628233216*t**4)/1324316448",
+        "g3": "t*(10*t**2 + sqrt(75647604142656 - 3432628233216*t**4)/31096)/4745520",
+        "operator": {
+          "2": "t",
+          "0": "-1"
+        },
+        "profile": "X**2 + X*t/78 - g2/10 - 31*t**2/851760 - 1/1680",
+        "character": 1,
+        "constant": "0",
+        "label": "lower g₂"
+      },
+      {
+        "g2": "t**2/2028 + sqrt(75647604142656 - 3432628233216*t**4)/1324316448",
+        "g3": "t*(10*t**2 - sqrt(75647604142656 - 3432628233216*t**4)/31096)/4745520",
+        "operator": {
+          "2": "t",
+          "0": "-1"
+        },
+        "profile": "X**2 + X*t/78 - g2/10 - 31*t**2/851760 - 1/1680",
+        "character": 1,
+        "constant": "0",
+        "label": "upper g₂"
+      }
+    ],
+    "notes": [
+      "Two real lattices for |a| < 13/6. At each endpoint they merge into one degenerate wave.",
+      "Beyond |a| = 13/6 the two lattices are complex conjugates and leave this real plane."
+    ],
+    "count_kind": "waves",
+    "primary": true,
+    "specials": [
+      "-13/6",
+      "13/6"
+    ],
+    "count_kind_override": "waves",
+    "kawahara": true
+  },
+  {
+    "slug": "n3_p4_cubic_positive",
+    "n": 3,
+    "p": 4,
+    "q": 2,
+    "title": "Swift–Hohenberg · two lattice curves",
+    "equation": "u''''+a u''+u-120u^3=0",
+    "parameter": "dispersion coefficient  a",
+    "interval": [
+      -4.6,
+      4.6
+    ],
+    "branches": [
+      {
+        "g2": "1/18 - t**2/180",
+        "g3": "t*(t**2/1800 - 1/360)/3",
+        "operator": {
+          "2": "t",
+          "0": "1"
+        },
+        "profile": "X + t/60",
+        "character": 1,
+        "constant": "0",
+        "label": "ordinary"
+      },
+      {
+        "g2": "t**2/108 - 1/27",
+        "g3": "-t**3/27000 + 4*t*(1/360 - t**2/3600)/9",
+        "operator": {
+          "2": "t",
+          "0": "1"
+        },
+        "profile": "-D(sqrt(X-2*b))",
+        "character": 2,
+        "constant": "0",
+        "label": "twisted",
+        "half_root": "t/30"
+      }
+    ],
+    "notes": [
+      "Both character branches are shown, up to translation and sign.",
+      "They coincide at a = ±5/2 on the cusp."
+    ],
+    "count_kind": "waves",
+    "primary": true,
+    "specials": [
+      "-5/2",
+      "5/2"
+    ]
+  },
+  {
+    "slug": "n5_p4_quintic",
+    "n": 5,
+    "p": 4,
+    "q": 1,
+    "title": "Quintic fourth order · a fourfold contact",
+    "equation": "u''''+u'''+a u''+a_1(a)u'+a_0(a)u-24u^5=0",
+    "parameter": "second-derivative coefficient  a",
+    "interval": [
+      -0.2,
+      0.65
+    ],
+    "branches": [
+      {
+        "g2": "t**2/75 - t/500 - 13/40000",
+        "g3": "(40*t - 9)*(1600*t**2 - 2160*t + 441)/216000000",
+        "operator": {
+          "3": "1",
+          "2": "t",
+          "1": "t/10 - 3/200",
+          "0": "9*t**2/100 - 81*t/1000 + 561/40000"
+        },
+        "profile": "X**2 + X*(40*t - 3)/600 + Y/10 + t**2/900 - 13*t/6000 + 73/160000",
+        "character": 4,
+        "constant": "0",
+        "profile_kind": "root_power"
+      }
+    ],
+    "notes": [
+      "One wave per compatible equation, with four ordinary poles and a character of order four.",
+      "The contact at a = 11/40 has discriminant multiplicity four. The other cusp parameter is a = 1/4."
+    ],
+    "count_kind": "waves",
+    "primary": true,
+    "specials": [
+      "1/4",
+      "11/40"
+    ],
+    "zoom_parameter": [
+      0.22,
+      0.3
+    ]
+  },
+  {
+    "slug": "n2_p5_quadratic_fifth",
+    "n": 2,
+    "p": 5,
+    "q": 5,
+    "title": "Nikolaevskiy type · four algebraic branches",
+    "equation": "u^{(5)}+u^{(4)}+a u'''+a_2u''+a_1u'+15120u^2+C=0",
+    "parameter": "coefficient  a",
+    "interval": [
+      -0.2,
+      0.68
+    ],
+    "branches": [
+      {
+        "g2": "(1319836903*a2**2 - 3342761037*a2*t**2 - 1400733796*a2*t + 813203314*a2 + 1072908459*t**3 + 432312741*t**2 - 520330006*t + 84758232)/(-4853689025724*a2 + 5988317629140*t - 602047830384)",
+        "g3": "(-8102635338336*a2**3 + 20597486558803*a2**2*t - 4730250720118*a2**2 + 8314560952698*a2*t**3 - 19928285987764*a2*t**2 + 7518518833826*a2*t - 730248251656*a2 - 4128208584906*t**4 + 6715817884797*t**3 - 3155805712192*t**2 + 563292601984*t - 32576306880)/(-919385775252640080*a2 + 1134307125311698800*t - 114039900031337280)",
+        "operator": {
+          "4": "1",
+          "3": "t",
+          "2": "a2",
+          "1": "37*a2/287 + 10*t**2/121 - 22101*t/243089 + 28148/1701623"
+        },
+        "profile": "-X**2/14 - X*Y/2 + X*(-a2/984 + 13*t/75768 - 5/132594) + Y*(1/3234 - t/264) + (-5281381259*a2**2*t + 4815676096*a2**2 + 2473099629*a2*t**2 - 7800436028*a2*t + 2140414276*a2 - 1114573012*t**3 + 3239470360*t**2 - 1547624764*t + 199794192)/(-1359032927202720*a2 + 1676728936159200*t - 168573392507520)",
+        "character": 1,
+        "constant": "(-7058364613365427825515129*a2**5 + 4059954683640291389121630*a2**4*t**2 + 29402667882530687190423362*a2**4*t - 6241601163750725035133717*a2**4 - 11401583016532545572653764*a2**3*t**3 - 43136630805662509344855934*a2**3*t**2 + 19643906271873200669543576*a2**3*t - 2160667247552658716432176*a2**3 - 5926448659064999624148744*a2**2*t**5 + 15985905101757458279136648*a2**2*t**4 + 26493556183597314165219404*a2**2*t**3 - 20871539472521096657659438*a2**2*t**2 + 4860224999484339565282972*a2**2*t - 387494928637579960757252*a2**2 + 8968139208826307408983392*a2*t**6 - 14413051160634505618548540*a2*t**5 - 3932613583403818468541001*a2*t**4 + 8493707430958532804702296*a2*t**3 - 3349300252671961650669992*a2*t**2 + 560416146616667622807064*a2*t - 36067095153379448270112*a2 - 2922576707772809714797128*t**7 + 4605145747853543795933226*t**6 - 1278077502366684945118494*t**5 - 892617145499565007700829*t**4 + 687957722963204086716428*t**3 - 191690643469678032650852*t**2 + 25544740634501081474208*t - 1366577249289881308992)/(243810074967697117535040*(-3773*a2 + 4655*t - 468)**2)",
+        "root_variable": "a2",
+        "root_polynomial": "-62775181716577356411*a2**4*t + 23338869484865774378*a2**4 + 250126789592226729798*a2**3*t**2 - 130573503926191908736*a2**3*t + 12391907850137180134*a2**3 + 19155516600831969204*a2**2*t**4 - 365953686469215377148*a2**2*t**3 + 246996303291881623172*a2**2*t**2 - 46626452279351590646*a2**2*t + 2207428164838427300*a2**2 - 47266859144910053880*a2*t**5 + 245107694470893065658*a2*t**4 - 191726999541044318736*a2*t**3 + 53669755863244931410*a2*t**2 - 5671971848363277688*a2*t + 149539121026014720*a2 + 19847834623655571204*t**6 - 62765576950720393449*t**5 + 53272653435729037170*t**4 - 19248358664784835026*t**3 + 3211879137902664740*t**2 - 217356736925258112*t + 2692564664212800"
+      }
+    ],
+    "notes": [
+      "Every colored point gives a compatible equation; its remaining coefficients are read from the algebra.",
+      "Several points at the same a generally have different remaining coefficients, so they are different equations."
+    ],
+    "count_kind": "equations",
+    "primary": true,
+    "zoom_parameter": [
+      0.18,
+      0.36
+    ],
+    "zoom_limits": [
+      [
+        -2e-05,
+        7e-05
+      ],
+      [
+        -9e-08,
+        5e-08
+      ]
+    ]
+  },
+  {
+    "slug": "n6_p5_sextic",
+    "n": 6,
+    "p": 5,
+    "q": 1,
+    "title": "Sextic fifth order · a fivefold character",
+    "equation": "P(D)u+120u^{6}=0,\\quad a_{4}=1",
+    "parameter": "torsion parameter  t",
+    "interval": [
+      -0.5,
+      20
+    ],
+    "branches": [
+      {
+        "g2": "(t**4 - 12*t**3 + 14*t**2 + 12*t + 1)/(972*(t - 3)**4)",
+        "g3": "-(t**2 + 1)*(t**4 - 18*t**3 + 74*t**2 + 18*t + 1)/(157464*(t - 3)**6)",
+        "operator": {
+          "4": "1",
+          "3": "-(7*t**2 - 42*t - 137)/(45*(t - 3)**2)",
+          "2": "-(57*t**3 - 513*t**2 + 439*t + 261)/(225*(t - 3)**3)",
+          "1": "-2*(47*t**4 - 564*t**3 + 1588*t**2 - 1626*t - 493)/(10125*(t - 3)**4)",
+          "0": "8*(182*t**5 - 2730*t**4 + 9380*t**3 - 1140*t**2 + 2835*t + 399)/(253125*(t - 3)**5)"
+        },
+        "profile": "-(144*X**2*t - 432*X**2 + 144*X*Y - 24*X*t**3 + 216*X*t**2 - 168*X*t - 72*X - 12*Y*t**2 + 72*Y*t + 132*Y + t**5 - 15*t**4 + 50*t**3 + 30*t**2 + 85*t + 9)/288",
+        "character": 5,
+        "constant": "0",
+        "profile_kind": "tate_root",
+        "tate_order": 5,
+        "rate": "1/(3*t - 9)",
+        "unscaled_F": "-(144*X**2*t - 432*X**2 + 144*X*Y - 24*X*t**3 + 216*X*t**2 - 168*X*t - 72*X - 12*Y*t**2 + 72*Y*t + 132*Y + t**5 - 15*t**4 + 50*t**3 + 30*t**2 + 85*t + 9)/288",
+        "unscaled_g2": "(t**4 - 12*t**3 + 14*t**2 + 12*t + 1)/12",
+        "unscaled_g3": "-(t**2 + 1)*(t**4 - 18*t**3 + 74*t**2 + 18*t + 1)/216",
+        "unscaled_operator": {
+          "4": "3*(t - 3)",
+          "3": "-(7*t**2 - 42*t - 137)/5",
+          "2": "-3*(57*t**3 - 513*t**2 + 439*t + 261)/25",
+          "1": "-2*(47*t**4 - 564*t**3 + 1588*t**2 - 1626*t - 493)/125",
+          "0": "24*(182*t**5 - 2730*t**4 + 9380*t**3 - 1140*t**2 + 2835*t + 399)/3125"
+        }
+      }
+    ],
+    "notes": [
+      "A character of order five gives five poles in an ordinary period cell; each displayed equation has one wave.",
+      "The chart fixes a₄ = 1. The value t = 3 has a₄ = 0 and is outside this normalization."
+    ],
+    "count_kind": "waves",
+    "primary": true,
+    "breaks": [
+      3
+    ],
+    "specials": [
+      0,
+      "11/2 - 5*sqrt(5)/2",
+      "11/2 + 5*sqrt(5)/2"
+    ],
+    "zoom_parameter": [
+      -0.13,
+      0.045
+    ],
+    "view_limits": [
+      [
+        -0.00015,
+        0.00125
+      ],
+      [
+        -1.8e-05,
+        3e-06
+      ]
+    ]
+  },
+  {
+    "slug": "n2_p6_quadratic_sixth",
+    "n": 2,
+    "p": 6,
+    "q": 6,
+    "title": "Quadratic sixth order · a three-branch fold",
+    "equation": "u^{(6)}+u^{(4)}+a u''-332640u^2+C=0",
+    "parameter": "coefficient  a",
+    "interval": [
+      -0.05,
+      0.48
+    ],
+    "branches": [
+      {
+        "g2": "g2",
+        "g3": "-7*g2**2 - 7*g2*t/786 + 343*g2/393000 - 331*t**2/81549072 + 32017*t/10193634000 - 4842523/10193634000000",
+        "operator": {
+          "4": "1",
+          "2": "t"
+        },
+        "profile": "X**3 + X**2/200 + X*(-3*g2/20 + t/15720 - 49/7860000) + 3*g2**2/4 + g2*t/1048 - 311*g2/524000 + 331*t**2/761124672 - 10419*t/21142352000 + 3300479/40774536000000",
+        "character": 1,
+        "constant": "134190*g2**4 + 44730*g2**3*t/131 - 386064*g2**3/3275 + 281515*g2**2*t**2/755084 - 19455583*g2**2*t/37754200 + 2333734093*g2**2/18877100000 + 117505*g2*t**3/593496024 - 352613*g2*t**2/899236400 + 838032091*g2*t/4945800200000 - 3083826319*g2/148374006000000 + 38894155*t**4/862069592748672 - 3420855541*t**3/21551739818716800 + 221790063053*t**2/1795978318226400000 - 2206208906503*t/76970499352560000000 + 758650357705121/384852496762800000000000",
+        "root_variable": "g2",
+        "root_polynomial": "31752*g2**3 + 6678*g2**2*t/131 - 308763*g2**2/16375 + 12033*g2*t**2/377542 - 398433*g2*t/23596375 + 26948481*g2/11798187500 + 331*t**3/53954184 + 82109*t**2/13488546000 - 3766537*t/843034125000 + 130377583/210758531250000"
+      }
+    ],
+    "notes": [
+      "Every colored point gives a compatible equation; its remaining coefficients are read from the algebra.",
+      "Several points at the same a generally have different remaining coefficients, so they are different equations."
+    ],
+    "count_kind": "equations",
+    "primary": true,
+    "zoom_parameter": [
+      0.18,
+      0.36
+    ],
+    "zoom_limits": [
+      [
+        -5e-05,
+        8e-05
+      ],
+      [
+        -3e-08,
+        3e-08
+      ]
+    ]
+  },
+  {
+    "slug": "n3_p6_cubic_twisted",
+    "n": 3,
+    "p": 6,
+    "q": 3,
+    "title": "Cubic sixth order · a twisted bifurcation",
+    "equation": "u^{(6)}+u^{(4)}+a_2u''+a_0u-20160u^3=0",
+    "parameter": "half-period value  e",
+    "interval": [
+      -0.025,
+      0.035
+    ],
+    "branches": [
+      {
+        "g2": "g2",
+        "g3": "-g2*t + 4*t**3",
+        "operator": {
+          "0": "(-1852589880*g2*t + 33852546*g2 + 3087649800*t**3 - 169262730*t**2 - 1150380*t + 1343)/571787",
+          "2": "-(-2604042*g2 + 13020210*t**2 + 104580*t - 1177)/6889",
+          "4": "1"
+        },
+        "profile": "(X+d)*sqrt(X-e)",
+        "character": 2,
+        "constant": "0",
+        "root_variable": "g2",
+        "root_polynomial": "-945*g2**2/2 + 2835*g2*t**2 + 4050*g2*t/83 + 567*g2/6889 - 8505*t**4/2 - 14310*t**3/83 - 6615*t**2/6889 - 3150*t/571787 + 1343/94916642",
+        "profile_d": "t/2 + 1/166",
+        "half_root": "t"
+      }
+    ],
+    "notes": [
+      "The two roots for g₂ give coefficient families a₂(e), a₀(e); the displayed branches can be different equations.",
+      "u = (℘ + (e + 1/83)/2)√(℘ − e). The ordinary branch requires a₄ = 0; see its separate plate."
+    ],
+    "count_kind": "equations",
+    "primary": true
+  },
+  {
+    "slug": "n4_p6_quartic",
+    "n": 4,
+    "p": 6,
+    "q": 2,
+    "title": "Quartic sixth order · the parabolic branch",
+    "equation": "u^{(6)}+u^{(4)}+a_2u''+a_0u-5040u^4=0",
+    "parameter": "lattice parameter  g₂",
+    "interval": [
+      -0.0006,
+      0.0017
+    ],
+    "branches": [
+      {
+        "g2": "t",
+        "g3": "-(19756800*t**2 - 4704*t - 5)/2032128",
+        "operator": {
+          "0": "-(98784000*t**2 - 277536*t - 85)/14112",
+          "2": "(4704*t + 5)/28",
+          "4": "1"
+        },
+        "profile": "X + 1/168",
+        "character": 1,
+        "constant": "0"
+      }
+    ],
+    "notes": [
+      "One wave per compatible equation; u = ℘ + 1/168. The curve is an exact parabola in the lattice plane.",
+      "Here a₂ = 168g₂ + 5/28. The remaining coefficient a₀ is determined by the same substitution."
+    ],
+    "count_kind": "waves",
+    "primary": true
+  },
+  {
+    "slug": "n7_p6_septic",
+    "n": 7,
+    "p": 6,
+    "q": 1,
+    "title": "Septic sixth order · a sixfold character",
+    "equation": "P(D)u-720u^{7}=0,\\quad a_{5}=1",
+    "parameter": "torsion parameter  t",
+    "interval": [
+      -1.5,
+      1.5
+    ],
+    "branches": [
+      {
+        "g2": "(3*t + 1)*(3*t**3 + 3*t**2 + 9*t + 1)/460992",
+        "g3": "(3*t**2 - 6*t - 1)*(9*t**4 + 36*t**3 + 30*t**2 + 12*t + 1)/1626379776",
+        "operator": {
+          "5": "1",
+          "4": "5*(9*t**2 + 18*t + 25)/336",
+          "3": "5*(81*t**2 + 270*t + 133)/10584",
+          "2": "(8991*t**4 + 28188*t**3 + 22410*t**2 + 41148*t + 10799)/2370816",
+          "1": "(6561*t**4 + 28188*t**3 + 27630*t**2 + 24588*t + 4249)/49787136",
+          "0": "5*(885735*t**6 + 3424842*t**5 + 3838185*t**4 - 3047220*t**3 - 2499255*t**2 - 1161270*t - 124729)/351298031616"
+        },
+        "profile": "(1728*X**3 + 1296*X**2*t**2 + 2592*X**2*t + 3024*X**2 - 1728*X*Y + 324*X*t**4 + 1296*X*t**3 + 216*X*t**2 + 1296*X*t + 324*X - 432*Y*t**2 - 1728*Y*t - 720*Y + 27*t**6 + 162*t**5 - 135*t**4 - 1620*t**3 - 1539*t**2 - 558*t - 49)/1728",
+        "character": 6,
+        "constant": "0",
+        "profile_kind": "tate_root",
+        "tate_order": 6,
+        "rate": "-1/14",
+        "unscaled_F": "(1728*X**3 + 1296*X**2*t**2 + 2592*X**2*t + 3024*X**2 - 1728*X*Y + 324*X*t**4 + 1296*X*t**3 + 216*X*t**2 + 1296*X*t + 324*X - 432*Y*t**2 - 1728*Y*t - 720*Y + 27*t**6 + 162*t**5 - 135*t**4 - 1620*t**3 - 1539*t**2 - 558*t - 49)/1728",
+        "unscaled_g2": "(3*t + 1)*(3*t**3 + 3*t**2 + 9*t + 1)/12",
+        "unscaled_g3": "(3*t**2 - 6*t - 1)*(9*t**4 + 36*t**3 + 30*t**2 + 12*t + 1)/216",
+        "unscaled_operator": {
+          "5": "-14",
+          "4": "35*(9*t**2 + 18*t + 25)/12",
+          "3": "-35*(81*t**2 + 270*t + 133)/27",
+          "2": "7*(8991*t**4 + 28188*t**3 + 22410*t**2 + 41148*t + 10799)/432",
+          "1": "-7*(6561*t**4 + 28188*t**3 + 27630*t**2 + 24588*t + 4249)/648",
+          "0": "5*(885735*t**6 + 3424842*t**5 + 3838185*t**4 - 3047220*t**3 - 2499255*t**2 - 1161270*t - 124729)/46656"
+        }
+      }
+    ],
+    "notes": [
+      "The normalized coefficient a₅ = 1 is fixed; the other coefficients follow an exact one-parameter family.",
+      "Characters of order six have six ordinary poles. The real cusp parameters are t = −1, −1/9, and 0."
+    ],
+    "count_kind": "waves",
+    "primary": true,
+    "specials": [
+      -1,
+      "-1/9",
+      0
+    ],
+    "zoom_parameter": [
+      -1.05,
+      0.15
+    ]
+  },
+  {
+    "slug": "n2_p4_mixed",
+    "n": 2,
+    "p": 4,
+    "q": 4,
+    "title": "Kawahara–KS · the dissipative curve",
+    "equation": "u''''+u'''+a u''+a_1(a)u'-840u^2+C(a)=0",
+    "parameter": "second-derivative coefficient  a",
+    "interval": [
+      -0.1,
+      0.65
+    ],
+    "branches": [
+      {
+        "g2": "(48 - 121*t)*(2057*t - 504)/207843636",
+        "g3": "41*t**3/2372760 - 265*t**2/12760176 + 9521*t/1286651080 - 51291/62273912272",
+        "operator": {
+          "3": "1",
+          "2": "t",
+          "1": "20*t/143 - 531/17303"
+        },
+        "profile": "X**2 + X*(t/78 - 3/3146) + Y/22 + 71*t**2/851760 - 519*t/11451440 + 1719/277124848",
+        "character": 1,
+        "constant": "93*t**4/2798978 - 456453*t**3/6773526760 + 145385169*t**2/3278386951840 - 66413475*t/5666926016752 + 1484946675/1371396096053984"
+      }
+    ],
+    "notes": [
+      "The odd derivative removes the two-wave freedom: one wave per compatible fixed equation.",
+      "The locus resolves several different passages through the discriminant."
+    ],
+    "count_kind": "waves",
+    "primary": false,
+    "zoom_parameter": [
+      0.2,
+      0.42
+    ]
+  },
+  {
+    "slug": "n3_p4_cubic_negative",
+    "n": 3,
+    "p": 4,
+    "q": 2,
+    "title": "Cubic fourth order · two tangencies",
+    "equation": "u''''+a u''-u-120u^3=0",
+    "parameter": "dispersion coefficient  a",
+    "interval": [
+      -4.6,
+      4.6
+    ],
+    "branches": [
+      {
+        "g2": "-t**2/180 - 1/18",
+        "g3": "t*(t**2/1800 + 1/360)/3",
+        "operator": {
+          "2": "t",
+          "0": "-1"
+        },
+        "profile": "X + t/60",
+        "character": 1,
+        "constant": "0",
+        "label": "ordinary"
+      },
+      {
+        "g2": "t**2/108 + 1/27",
+        "g3": "-t**3/27000 + 4*t*(-t**2/3600 - 1/360)/9",
+        "operator": {
+          "2": "t",
+          "0": "-1"
+        },
+        "profile": "-D(sqrt(X-2*b))",
+        "character": 2,
+        "constant": "0",
+        "label": "twisted",
+        "half_root": "t/30"
+      }
+    ],
+    "notes": [
+      "Both character branches are shown, up to translation and sign.",
+      "The twisted branch touches the cusp at a = ±10/√11; the ordinary branch stays at Δ < 0."
+    ],
+    "count_kind": "waves",
+    "primary": false,
+    "specials": [
+      "-10*sqrt(11)/11",
+      "10*sqrt(11)/11"
+    ]
+  },
+  {
+    "slug": "n3_p4_mixed",
+    "n": 3,
+    "p": 4,
+    "q": 2,
+    "title": "Swift–Hohenberg · the dispersive curve",
+    "equation": "u''''+u'''+a u''+a_1(a)u'+a_0(a)u-120u^3=0",
+    "parameter": "second-derivative coefficient  a",
+    "interval": [
+      -0.12,
+      0.65
+    ],
+    "branches": [
+      {
+        "g2": "-t**2/180 + t/315 - 181/432180",
+        "g3": "(98*t - 23)*(21609*t**2 - 11368*t + 1434)/6353046000",
+        "operator": {
+          "3": "1",
+          "2": "t",
+          "1": "t/7 - 39/1372",
+          "0": "2*t**2/5 - 239*t/980 + 941/27440"
+        },
+        "profile": "-D(sqrt(X-e))-sqrt(X-e)/14",
+        "character": 2,
+        "constant": "0",
+        "half_root": "t/30 - 23/2940",
+        "profile_b": "-1/14"
+      }
+    ],
+    "notes": [
+      "The residue condition fixes a₁ = (196a − 39)/1372, then a₀ and the lattice are fixed.",
+      "One wave per equation, with a character of order two."
+    ],
+    "count_kind": "waves",
+    "primary": false,
+    "zoom_parameter": [
+      0.2,
+      0.36
+    ]
+  },
+  {
+    "slug": "n5_p4_even",
+    "n": 5,
+    "p": 4,
+    "q": 1,
+    "title": "Quintic · the even-operator line",
+    "equation": "u^{(4)}+u^{(2)}+\\cdots-24u^{5}=0",
+    "parameter": "lattice parameter  g₂",
+    "interval": [
+      -0.009,
+      0.019
+    ],
+    "branches": [
+      {
+        "g2": "t",
+        "g3": "t/30 - 1/6750",
+        "operator": {
+          "0": "(60*t + 1)/20",
+          "2": "1"
+        },
+        "profile": "sqrt(X-(-1/30))",
+        "character": 2,
+        "constant": "0"
+      }
+    ],
+    "notes": [
+      "Even operators also carry characters of order two. This branch is separate from the full-order character family.",
+      "Every point determines the compatible lower coefficients; each such equation has one meromorphic wave."
+    ],
+    "count_kind": "waves",
+    "primary": false
+  },
+  {
+    "slug": "n3_p6_ordinary",
+    "n": 3,
+    "p": 6,
+    "q": 3,
+    "title": "Cubic sixth order · the ordinary line",
+    "equation": "u^{(6)}+a u''-u-20160u^3=0",
+    "parameter": "second-derivative coefficient  a",
+    "interval": [
+      -7,
+      4
+    ],
+    "branches": [
+      {
+        "g2": "-t/252",
+        "g3": "1/4320",
+        "operator": {
+          "2": "t",
+          "0": "-1"
+        },
+        "profile": "-Y/2",
+        "character": 1,
+        "constant": "0"
+      }
+    ],
+    "notes": [
+      "With a₄ = 0 the elliptic wave is ordinary: u = −℘′/2, one wave per fixed equation.",
+      "Its lattice follows a horizontal line; the pure D⁶ − 1 equation is the point g₂ = 0."
+    ],
+    "count_kind": "waves",
+    "primary": false
+  },
+  {
+    "slug": "n7_p6_even",
+    "n": 7,
+    "p": 6,
+    "q": 1,
+    "title": "Septic · the even-operator line",
+    "equation": "u^{(6)}+u^{(4)}+\\cdots-720u^{7}=0",
+    "parameter": "lattice parameter  g₂",
+    "interval": [
+      -0.001,
+      0.002
+    ],
+    "branches": [
+      {
+        "g2": "t",
+        "g3": "t/105 - 4/1157625",
+        "operator": {
+          "0": "9*(3675*t + 1)/8575",
+          "2": "(441*t + 1)/7",
+          "4": "1"
+        },
+        "profile": "sqrt(X-(-1/105))",
+        "character": 2,
+        "constant": "0"
+      }
+    ],
+    "notes": [
+      "Even operators also carry characters of order two. This branch is separate from the full-order character family.",
+      "Every point determines the compatible lower coefficients; each such equation has one meromorphic wave."
+    ],
+    "count_kind": "waves",
+    "primary": false
+  }
+]

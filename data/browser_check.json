@@ -1,0 +1,591 @@
+{
+  "status": "PASS",
+  "public_url": null,
+  "slices": 19,
+  "pairs": 13,
+  "cards": 19,
+  "checked": [
+    {
+      "slug": "n2_p2_kdv",
+      "readouts": [
+        {
+          "count": "One fixed equation · infinitely many energy levels",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 12.967900770402444
+          }
+        },
+        {
+          "count": "One fixed equation · infinitely many energy levels",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 6.901643615339256
+          }
+        },
+        {
+          "count": "One fixed equation · infinitely many energy levels",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 5.880017892442224
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n3_p2_mkdv",
+      "readouts": [
+        {
+          "count": "One fixed equation · infinitely many energy levels",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 3.767104164607511
+          }
+        },
+        {
+          "count": "One fixed equation · infinitely many energy levels",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 4.899766080299457
+          }
+        },
+        {
+          "count": "One fixed equation · infinitely many energy levels",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 7.775364871236272
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n2_p3_ks",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 12.387343160529412
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 6.909569871433075
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 5.781285849635407
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n4_p3_quartic",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 38.54190444733424
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 22.79651896357598
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 17.465851062044756
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n2_p4_kawahara",
+      "readouts": [
+        {
+          "count": "0 distinct real lattice solutions at this parameter",
+          "profile": null
+        },
+        {
+          "count": "2 distinct real lattice solutions at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 13.016617741412349
+          }
+        },
+        {
+          "count": "0 distinct real lattice solutions at this parameter",
+          "profile": null
+        }
+      ],
+      "branches": 2
+    },
+    {
+      "slug": "n3_p4_cubic_positive",
+      "readouts": [
+        {
+          "count": "2 distinct real lattice solutions at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 10.04530720426108
+          }
+        },
+        {
+          "count": "2 distinct real lattice solutions at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 7.637924205311116
+          }
+        },
+        {
+          "count": "2 distinct real lattice solutions at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 6.659657880179913
+          }
+        }
+      ],
+      "branches": 2
+    },
+    {
+      "slug": "n5_p4_quintic",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 26.462197500721096
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 66.35271262710513
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 31.92484444263567
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n2_p5_quadratic_fifth",
+      "readouts": [
+        {
+          "count": "2 real compatible coefficient choices at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 30.059390865135168
+          }
+        },
+        {
+          "count": "4 real compatible coefficient choices at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 226.63408152650288
+          }
+        },
+        {
+          "count": "2 real compatible coefficient choices at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 56.06061234522936
+          }
+        }
+      ],
+      "branches": 4
+    },
+    {
+      "slug": "n6_p5_sextic",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 86.02079147078588
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 7.958692888853141
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 41.71216008856651
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n2_p6_quadratic_sixth",
+      "readouts": [
+        {
+          "count": "1 real compatible coefficient choice at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 48.63547371817102
+          }
+        },
+        {
+          "count": "1 real compatible coefficient choice at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 41.355123592971765
+          }
+        },
+        {
+          "count": "1 real compatible coefficient choice at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 37.34456775934971
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n3_p6_cubic_twisted",
+      "readouts": [
+        {
+          "count": "2 real compatible coefficient choices at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 25.058596003037373
+          }
+        },
+        {
+          "count": "2 real compatible coefficient choices at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 42.89725415466852
+          }
+        },
+        {
+          "count": "0 real compatible coefficient choices at this parameter",
+          "profile": null
+        }
+      ],
+      "branches": 2
+    },
+    {
+      "slug": "n4_p6_quartic",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 35.32346183559921
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 23.335603104507392
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 37.99929009749742
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n7_p6_septic",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 93.8545512587619
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 186.58416557363196
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 56.531642388940504
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n2_p4_mixed",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 43.56135329481922
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 150.77721057182586
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 50.782662498576144
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n3_p4_cubic_negative",
+      "readouts": [
+        {
+          "count": "2 distinct real lattice solutions at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 9.728964978022784
+          }
+        },
+        {
+          "count": "2 distinct real lattice solutions at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 16.90550524411852
+          }
+        },
+        {
+          "count": "2 distinct real lattice solutions at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 8.448916383909763
+          }
+        }
+      ],
+      "branches": 2
+    },
+    {
+      "slug": "n3_p4_mixed",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 30.075881755685696
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 138.82144780890192
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 19.59726142528052
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n5_p4_even",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 17.149499450278217
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 27.009975862055644
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 18.233210646092516
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n3_p6_ordinary",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 8.808092305109732
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 11.157434506202753
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 13.411229084612547
+          }
+        }
+      ],
+      "branches": 1
+    },
+    {
+      "slug": "n7_p6_even",
+      "readouts": [
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 30.256926581036016
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 46.53273769715937
+          }
+        },
+        {
+          "count": "1 distinct real lattice solution at this parameter",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 32.141145242673595
+          }
+        }
+      ],
+      "branches": 1
+    }
+  ],
+  "kawahara": [
+    {
+      "parameter": -2.1666666666667,
+      "count": 1,
+      "delta": 0
+    },
+    {
+      "parameter": 2.1666666666667,
+      "count": 1,
+      "delta": 0
+    }
+  ],
+  "limits": {
+    "pulse_minimum": -0.9166666666666667,
+    "upper_regular_mean": 2,
+    "trigonometric_poles": 3
+  },
+  "mobile": {
+    "width": 390,
+    "document": 390,
+    "cards": 19
+  },
+  "missing_links": [],
+  "javascript_errors": []
+}

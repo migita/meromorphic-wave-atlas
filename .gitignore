@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+*.log
+.venv/
+data/browser/
+data/profile_evaluations.json
+data/live_site_check.json
+physical/browser_preview.png
+.DS_Store

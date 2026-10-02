@@ -1,0 +1,5 @@
+*.svg linguist-generated=true -whitespace
+*.csv linguist-generated=true -whitespace
+data/*.json linguist-generated=true
+index.html linguist-generated=true
+physical/kawahara_physical.html linguist-generated=true -whitespace
