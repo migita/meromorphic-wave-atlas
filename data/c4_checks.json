@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "fixtures": 260,
+  "profile_evaluations": 1040,
+  "sweep_points": 6731,
+  "max_scaled_ode_residual": 3.5662405655850146e-15,
+  "max_scaled_lattice_error": 1.2621918628781389e-14,
+  "independent_period_checks": 260,
+  "failures": []
+}

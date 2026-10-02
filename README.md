@@ -4,7 +4,8 @@
 
 An interactive atlas of exact travelling waves, by Alexander Migita. Select an equation family,
 move its parameter slider, and select a lattice branch to see the corresponding solution immediately.
-The explorer covers 13 admissible `(n,p)` pairs through ODE order six and 19 coefficient slices.
+The explorer covers 13 admissible `(n,p)` pairs through ODE order six, 19 pure-power coefficient
+slices, and an editable **[C4 coefficient explorer](https://migita.github.io/meromorphic-wave-atlas/#family=c4)**.
 
 The solution panel offers a pole-free slice when the lattice has a bounded real oval, and a
 meromorphic real-axis view with poles marked and the vertical display range clipped. Complex
@@ -18,7 +19,39 @@ Newly selected families start in the pole-free view when it is available. For th
 Kuramoto–Sivashinsky family, smooth real periodic profiles occur for `−18<C<−8`.
 [Open the smooth KS example at C=−13](https://migita.github.io/meromorphic-wave-atlas/#family=n2_p3_ks&parameter=-13&view=regular).
 Choosing “Meromorphic real axis” instead places the canonical poles on the plotted line. The
-address-bar link records the current family, parameter, branch, and slice for sharing.
+address-bar link records the current family, parameter, branch, and slice for sharing. For C4,
+it also records all coefficients, free coordinates, and sweep settings.
+
+## C4 coefficient explorer
+
+The additional fourth-order travelling-wave equation is
+
+`v'''' + A v v'' + B (v')² + C v³ + a₂ v'' + a₀ v + a₀₀ = 0`.
+
+Choose a **Lax, Sawada–Kotera, Kaup–Kupershmidt, pure-cubic, or generic** core, or edit all six
+real coefficients. Inputs accept fractions such as `20/3`. Select which coefficient to sweep,
+set its interval, and click a branch to see its solution. “Focus selected branch” enlarges small
+branches without changing the solution count. The current sweep can be downloaded as CSV.
+
+This constructor displays the **affine-Weierstrass sector `v=α℘+β`**. It solves the undivided
+coefficient equations, including resonant cases where `β`, `g₂`, or `g₃` becomes free. These free
+controls select members of a continuous family of one fixed equation. Solved `α` and `β` may be
+complex; the plotted invariants and user-selected free coordinates are real. Opposite-sign
+profiles sharing a lattice are listed separately. Counts describe the displayed representatives
+of this sector, not a census of all C4 waves; multiple-pole elliptic and genus-two solutions are
+outside it.
+
+The default Lax example fixes `a₂=0, a₀=−1, a₀₀=0`. Its `α=−2` family traces
+
+`g₂=1/2−15β²,  g₃=35β³−β`.
+
+It also has an isolated `α=−6` branch at `(g₂,g₃)=(1/42,0)`. The pulse shortcut selects
+`β=1/6`, where the regular slice is exactly `v(z)=½ sech²(z/2)`.
+[Open that pulse](https://migita.github.io/meromorphic-wave-atlas/#family=c4&sweep=beta&parameter=0.16666666666666666&branch=0&view=regular),
+or download the [six-panel C4 overview](figures/c4.png) ([PDF](figures/c4.pdf), [SVG](figures/c4.svg)).
+The [symbolic record](data/c4_formulas.json) derives and verifies the conditions directly;
+the [numerical checks](data/c4_checks.json) independently substitute the browser's profiles
+into the full nonlinear ODE.
 
 This repository is self-contained: all assets are local, and the small exact torsion-divisor
 constructor is included in `elliptic_divisor.py`. The static site is served from the root of `main`
@@ -30,6 +63,7 @@ by GitHub Pages, with `.nojekyll`; opening `index.html` directly also works offl
 python3 -m pip install -r requirements.txt
 python3 build.py
 python3 test_profiles.py       # Node.js needed for the browser math engine
+python3 test_c4.py             # Independent C4 profile/ODE and sweep checks
 node browser_check.mjs         # Node >=22 and a local Chromium browser
 ```
 
@@ -43,7 +77,7 @@ Wave values and physical readouts in the interactive panel are numerical evaluat
 
 ## The atlas
 
-Open the [offline interactive gallery](index.html), the [21-page PDF book](g2g3_atlas.pdf), or the
+Open the [offline interactive gallery](index.html), the [22-page PDF book](g2g3_atlas.pdf), or the
 [overview image](figures/atlas_overview.png). Every individual plate is also supplied as PNG, SVG,
 and PDF in [figures](figures/). The gallery lets you select a family, move its parameter, inspect
 the selected lattice points, and read the corresponding equation coefficients.
@@ -53,7 +87,8 @@ For a concrete physical readout, see [Kawahara in wavelength–amplitude–mean 
 and the [solitary-pulse limit](physical/kawahara_pulse_limit.png).
 
 The agreed range is **2 ≤ p ≤ 6, 2 ≤ n ≤ 7**. All **13** pairs satisfying the necessary pole
-balance `q = p/(n−1) ∈ Z_{>0}` are represented. Six companion slices make **19 plates** in total.
+balance `q = p/(n−1) ∈ Z_{>0}` are represented. Six companion slices make **19 pure-power plates**,
+supplemented by the C4 overview.
 The other 17 pairs are marked in the overview's coverage table. Here `p` is the order of the
 travelling-wave ODE; for an evolution equation integrated once, the PDE has order `p+1`.
 
@@ -80,7 +115,8 @@ identities needed to reproduce the displayed curves are included in this reposit
 
 The common physical reductions motivate the range. Quartic, sextic, and septic fluxes are included
 as polynomial extensions so that the low-order table has no omitted admissible pair; the table
-does not assert that every extension is a standard physical model. Equations with nonlinear derivative terms are outside the pure-power scope of this atlas.
+does not assert that every extension is a standard physical model. The C4 explorer separately
+adds the nonlinear derivative terms `v v''` and `(v')²`.
 
 ## Reading the figures and counts
 
@@ -103,8 +139,9 @@ the displayed window. The gallery explicitly reports when a selected point is ou
 
 **A real point means real lattice invariants, not automatically a smooth, bounded real-valued
 physical wave.** The profile, amplitude normalization, and choice of a real slice still matter.
-The counts are of nonconstant meromorphic wave classes, modulo translation and phase, within
-the declared slice. Complex conjugate lattices can leave this real plane without the corresponding
+The pure-power counts are of nonconstant meromorphic wave classes, modulo translation and phase,
+within the declared slice. C4 uses the representative counts described above.
+Complex conjugate lattices can leave this real plane without the corresponding
 complex meromorphic waves ceasing to exist.
 
 There are two distinct uses of the slider:
@@ -133,7 +170,7 @@ For example, the separate KS fronts in the earlier picture are not extra points 
 
 ## Equations and normalization
 
-Except for the familiar physical KS formula, profiles have leading Laurent coefficient one:
+Except for the familiar physical KS formula, pure-power profiles have leading Laurent coefficient one:
 
 `P(D)u − K uⁿ + C = 0,  K = (−1)^p (q)_p`.
 
@@ -200,7 +237,7 @@ these explicitly constructed families is a separate theoretical question.
 Run everything from any directory:
 
 ```sh
-python3 /path/to/g2g3_atlas_20261002/build.py
+python3 /path/to/meromorphic-wave-atlas/build.py
 ```
 
 Or run the stages separately from this directory:
@@ -212,13 +249,16 @@ python3 derive.py tate
 python3 derive.py mixed
 python3 boundaries.py
 python3 verify.py
+python3 c4.py
 python3 render.py
 ```
 
 Dependencies: Python, SymPy, NumPy, SciPy, and Matplotlib; see [requirements.txt](requirements.txt).
 The gallery itself requires none of them and works directly from its HTML file. The optional
-`node browser_check.mjs` checks all 19 selectors, 57 slider positions, the exact Kawahara
-coalescences, links, and desktop/mobile layout. It uses a locally installed Chromium; set
+`node browser_check.mjs` checks all 20 explorer modes, 60 slider positions, the exact Kawahara
+coalescences, the KS smooth/singular view regression, C4 presets and coefficient controls,
+free-coordinate resonances, the Lax pulse, complex profiles, shared links, CSV export, and
+desktop/mobile layout. It uses a locally installed Chromium; set
 `ATLAS_CHROME` if needed. See [browser_check.json](data/browser_check.json).
 
 The mathematical conventions are the standard Weierstrass equation `Y²=4X³−g₂X−g₃` and the monic

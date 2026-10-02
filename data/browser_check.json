@@ -1,9 +1,9 @@
 {
   "status": "PASS",
   "public_url": null,
-  "slices": 19,
+  "slices": 20,
   "pairs": 13,
-  "cards": 19,
+  "cards": 20,
   "checked": [
     {
       "slug": "n2_p2_kdv",
@@ -562,6 +562,36 @@
         }
       ],
       "branches": 1
+    },
+    {
+      "slug": "c4",
+      "readouts": [
+        {
+          "count": "2 displayed affine-℘ representatives · continuous family present",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 7.266945730484519
+          }
+        },
+        {
+          "count": "2 displayed affine-℘ representatives · continuous family present",
+          "profile": {
+            "mode": "regular",
+            "constant": false,
+            "period": 4.40975759598633
+          }
+        },
+        {
+          "count": "2 displayed affine-℘ representatives · continuous family present",
+          "profile": {
+            "mode": "axis",
+            "constant": false,
+            "period": 4.583691519262052
+          }
+        }
+      ],
+      "branches": 2
     }
   ],
   "kawahara": [
@@ -593,10 +623,20 @@
     "axis": true,
     "regular": true
   },
+  "c4": {
+    "presets": 5,
+    "editable_coefficients": 6,
+    "free_coordinates": 3,
+    "lax_pulse_peak": 0.5000000000000001,
+    "complex_profiles": true,
+    "scene_round_trip": true,
+    "invalid_input": true,
+    "csv_rows": 962
+  },
   "mobile": {
     "width": 390,
     "document": 390,
-    "cards": 19
+    "cards": 20
   },
   "missing_links": [],
   "javascript_errors": []

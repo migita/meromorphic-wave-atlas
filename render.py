@@ -405,6 +405,8 @@ def main():
                 fig.savefig(HERE/"figures"/(slug+"."+extension),dpi=170)
             pdf.savefig(fig);plt.close(fig)
             print("RENDERED",slug,flush=True)
+        from c4 import figure as c4_figure
+        fig=c4_figure();pdf.savefig(fig);plt.close(fig)
     payload=gallery_data(collection)
     from profiles import attach_profiles
     attach_profiles(payload)
@@ -415,7 +417,7 @@ def main():
     (HERE/"data"/"coverage.json").write_text(json.dumps({"pairs":[[m["n"],m["p"]] for m in models if m["primary"]],
         "excluded_pairs":[[n,p] for p in range(2,7) for n in range(2,8) if p%(n-1)],"slices":len(models),
         "sample_counts":{d["model"]["slug"]:sum(len(f["points"]) for f in d["frames"]) for d in collection}},indent=2)+"\n")
-    print("WROTE index.html, g2g3_atlas.pdf, 19 plates and 2 overview sheets",flush=True)
+    print("WROTE index.html, 22-page g2g3_atlas.pdf, 19 pure-power plates and the C4 overview",flush=True)
 
 
 if __name__=="__main__":main()

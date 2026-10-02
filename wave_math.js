@@ -38,6 +38,26 @@
     return {...j,X:g.e[2]+g.G/(sn*sn),Y:-2*Math.pow(g.G,1.5)*cn*dn/(sn*sn*sn)};
   }
   function polynomial(terms,X,Y){let result=0;for(const [i,j,c] of terms)result+=c*Math.pow(X,i)*Math.pow(Y,j);return result;}
+  function geometry(g2,g3){
+    if(!Number.isFinite(g2)||!Number.isFinite(g3))throw Error('Nonfinite lattice invariants');
+    if(g2===0&&g3===0)return {type:'rational',delta:0,period:null,scale:1};
+    const scale=Math.max(Math.sqrt(Math.abs(g2)),Math.cbrt(Math.abs(g3))),a=g2/scale/scale,b=g3/scale/scale/scale;
+    const disc=a*a*a-27*b*b,den=Math.abs(a*a*a)+27*b*b;
+    const ellipticK=mc=>{let x=1,y=Math.sqrt(Math.max(0,mc));for(let j=0;j<20&&Math.abs(x-y)>2e-15*x;j++){const next=(x+y)/2;y=Math.sqrt(x*y);x=next;}return Math.PI/(2*x);};
+    if(Math.abs(disc)<=2e-12*den&&g2>=0){
+      const e=Math.sign(-g3)*Math.sqrt(g2/12);
+      if(e>0)return {type:'rect',delta:0,node:true,e:[e,e,-2*e],G:3*e,D:3*e,m:1,mc:0,K:null,period:null};
+      const G=-3*e;return {type:'rect',delta:0,node:true,e:[-2*e,e,e],G,D:0,m:0,mc:1,K:PI/2,period:PI/Math.sqrt(G)};
+    }
+    if(disc>0){
+      const r=Math.sqrt(a/12),theta=Math.acos(Math.max(-1,Math.min(1,3*Math.sqrt(3)*b/Math.pow(a,1.5))))/3;
+      const e=[0,1,-1].map(j=>2*r*Math.cos(theta-j*2*PI/3)*scale),G=e[0]-e[2],D=e[1]-e[2],mc=(e[0]-e[1])/G,m=D/G,K=ellipticK(mc);
+      return {type:'rect',delta:1,e,G,D,m,mc,K,period:2*K/Math.sqrt(G)};
+    }
+    const rad=Math.sqrt(Math.max(0,b*b/64-a*a*a/1728)),en=Math.cbrt(b/8+rad)+Math.cbrt(b/8-rad),hn=Math.sqrt(3*en*en-a/4);
+    const e=en*scale,H=hn*scale,m=.5-3*en/(4*hn),mc=.5+3*en/(4*hn),K=ellipticK(mc);
+    return {type:'one',delta:-1,e,H,m,mc,K,period:2*K/Math.sqrt(H)};
+  }
   function halfroot(spec,x,mode,basis){
     const g=spec.geometry;if(g.type==='rational')return {v:1/x,d:-1/(x*x),imag:false};
     const {sn,cn,dn}=basis;
@@ -91,7 +111,7 @@
     const mode=actualMode(spec,preferred);
     if(nearPole(spec.geometry,x,mode))return null;
     const b=base(spec.geometry,x,mode);let re=0,im=0;
-    if(spec.kind==='polynomial')re=polynomial(spec.terms,b.X,b.Y);
+    if(spec.kind==='polynomial'){re=polynomial(spec.terms,b.X,b.Y);if(spec.imag_terms)im=polynomial(spec.imag_terms,b.X,b.Y);}
     else if(spec.kind==='halfroot'){
       const v=halfroot(spec,x,mode,b);
       let value=spec.form==='generator'?v.v:spec.form==='derivative'?-v.d+spec.b*v.v:(b.X+spec.d)*v.v;
@@ -147,6 +167,6 @@
     if(constant)period=null;
     return {x,re,im,mode,anyImag,poles,clipped,constant,period,mean,amplitude,range:[low,high],width};
   }
-  root.WaveMath={jacobi,base,polynomial,halfroot,at,generate,actualMode,periodMultiplier};
+  root.WaveMath={jacobi,base,polynomial,geometry,halfroot,at,generate,actualMode,periodMultiplier};
   if(typeof module!=='undefined')module.exports=root.WaveMath;
 })(typeof globalThis!=='undefined'?globalThis:window);
