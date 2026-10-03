@@ -182,7 +182,7 @@ function drawWave() {
     wave.width = wave.clientWidth * (devicePixelRatio || 1);
     wave.height = wave.clientHeight * (devicePixelRatio || 1);
     c.scale(devicePixelRatio || 1, devicePixelRatio || 1);
-    c.fillStyle = "#707f7c";
+    c.fillStyle = "#596c78";
     c.font = "12px system-ui";
     c.textAlign = "center";
     c.fillText(
