@@ -1,267 +1,103 @@
 # Meromorphic Wave Atlas
 
-**[Open the public explorer](https://migita.github.io/meromorphic-wave-atlas/)**
+**[Open the interactive atlas](https://migita.github.io/meromorphic-wave-atlas/)** · Alexander Migita
 
-An interactive atlas of exact travelling waves, by Alexander Migita. Select an equation family,
-move its parameter slider, and select a lattice branch to see the corresponding solution immediately.
-The explorer covers 13 admissible `(n,p)` pairs through ODE order six, 19 pure-power coefficient
-slices, and an editable **[C4 coefficient explorer](https://migita.github.io/meromorphic-wave-atlas/#family=c4)**.
+Exact travelling waves and the geometry of their elliptic lattices. Every graph in the explorer is interactive; no picture gallery, external font, CDN, or package installation is needed to view it. Open `index.html` directly to work offline.
 
-The solution panel offers a pole-free slice when the lattice has a bounded real oval, and a
-meromorphic real-axis view with poles marked and the vertical display range clipped. Complex
-solutions show separate real and imaginary parts. For real periodic profiles it also reports the
-full real period, peak-to-trough amplitude, and period mean. The two Kawahara endpoint buttons
-show the solitary pulse, the constant small-amplitude limit, and the nonconstant trigonometric
-degeneration. Kawahara is displayed in physical normalization `v=−1680u`, matching the separate
-physical-coordinate example; other profiles solve their displayed normalization.
+## Two ways to explore
 
-Newly selected families start in the pole-free view when it is available. For the dispersive
-Kuramoto–Sivashinsky family, smooth real periodic profiles occur for `−18<C<−8`.
-[Open the smooth KS example at C=−13](https://migita.github.io/meromorphic-wave-atlas/#family=n2_p3_ks&parameter=-13&view=regular).
-Choosing “Meromorphic real axis” instead places the canonical poles on the plotted line. The
-address-bar link records the current family, parameter, branch, and slice for sharing. For C4,
-it also records all coefficients, free coordinates, and sweep settings.
+**Discover** starts with seven named examples: Kawahara, KdV, dispersive Kuramoto–Sivashinsky, Lax fifth-order KdV, Sawada–Kotera, Kaup–Kupershmidt, and a Swift–Hohenberg stationary reduction. Each declares its equation, normalization, constructed sector, and literature sources. All nineteen pure-power coefficient slices remain available in the full-atlas selector.
 
-## C4 coefficient explorer
+**Equation lab** lets you edit all six real C4 coefficients, including zero terms and fractions, or use the restricted Kawahara, dispersive KS, and KdV templates. The C4 equation is
 
-The additional fourth-order travelling-wave equation is
+```text
+v⁗ + A v v″ + B (v′)² + C v³ + a₂ v″ + a₀ v + a₀₀ = 0.
+```
 
-`v'''' + A v v'' + B (v')² + C v³ + a₂ v'' + a₀ v + a₀₀ = 0`.
+The C4 constructor solves the undivided coefficient equations in the sector `v = α℘ + β`. It includes resonances with free `β`, `g₂`, or `g₃`, complex amplitudes on real lattices, and separate representatives sharing a lattice. Its counts describe this constructed sector. The other lab templates declare which coordinate varies and which coefficients are fixed; KdV’s energy varies within one fixed equation.
 
-Choose a **Lax, Sawada–Kotera, Kaup–Kupershmidt, pure-cubic, or generic** core, or edit all six
-real coefficients. Inputs accept fractions such as `20/3`. Select which coefficient to sweep,
-set its interval, and click a branch to see its solution. “Focus selected branch” enlarges small
-branches without changing the solution count. The current sweep can be downloaded as CSV.
+## Interactions
 
-This constructor displays the **affine-Weierstrass sector `v=α℘+β`**. It solves the undivided
-coefficient equations, including resonant cases where `β`, `g₂`, or `g₃` becomes free. These free
-controls select members of a continuous family of one fixed equation. Solved `α` and `β` may be
-complex; the plotted invariants and user-selected free coordinates are real. Opposite-sign
-profiles sharing a lattice are listed separately. Counts describe the displayed representatives
-of this sector, not a census of all C4 waves; multiple-pole elliptic and genus-two solutions are
-outside it.
+- Click or tap **anywhere along a lattice curve** to select a solved parameter and branch. Hover reveals its coordinates. Curve selection snaps to the actual solved frames.
+- Drag the lattice to pan; use `+`, `−`, and **Fit** to zoom. With the plot focused, arrow keys select neighbouring parameters or branches; `0` fits the finite curves. Ctrl/Alt + wheel also zooms.
+- Click the **wave** to pin a value, or type a coordinate into **Probe z**. Choose a common spatial window to compare profiles without rescaling their spatial coordinate.
+- Use the parameter field for numbers or fractions. C4 evaluates the requested coordinate directly; other templates select the nearest precomputed frame and report a snap when needed.
+- Choose the pole-free or meromorphic slice, compare the solitary limit, export wave or lattice CSV, and **Copy link** to preserve the equation, branch, slice, window, probe, zoom, and pulse-transition state. Custom coefficients are remembered when switching between Discover and the lab.
 
-The default Lax example fixes `a₂=0, a₀=−1, a₀₀=0`. Its `α=−2` family traces
+Finite-period windows are limited to twenty lattice periods so individual oscillations remain resolved. **Reset view** restores the plot controls without changing your equation or parameter.
 
-`g₂=1/2−15β²,  g₃=35β³−β`.
+### Kawahara: a periodic train becomes one pulse
 
-It also has an isolated `α=−6` branch at `(g₂,g₃)=(1/42,0)`. The pulse shortcut selects
-`β=1/6`, where the regular slice is exactly `v(z)=½ sech²(z/2)`.
-[Open that pulse](https://migita.github.io/meromorphic-wave-atlas/#family=c4&sweep=beta&parameter=0.16666666666666666&branch=0&view=regular),
-or download the [six-panel C4 overview](figures/c4.png) ([PDF](figures/c4.pdf), [SVG](figures/c4.svg)).
-The [symbolic record](data/c4_formulas.json) derives and verifies the conditions directly;
-the [numerical checks](data/c4_checks.json) independently substitute the browser's profiles
-into the full nonlinear ODE.
+The limit control follows the smooth branch of
 
-This repository is self-contained: all assets are local, and the small exact torsion-divisor
-constructor is included in `elliptic_divisor.py`. The static site is served from the root of `main`
-by GitHub Pages, with `.nojekyll`; opening `index.html` directly also works offline.
+```text
+v⁗ + a v″ − v + v²/2 = 0
+```
 
-## Build and check
+on a common spatial scale. The periodic depressions separate as `a → −13/6`, with the exact limit
+
+```text
+v*(z) = 2 − (35/12) sech⁴(z/(2√6)).
+```
+
+The 161 transition states are computed with 110 decimal digits before compilation. The complementary Jacobi parameter is stored explicitly, retaining finite periods when `a` and `m` would otherwise round to the endpoint in JavaScript. The last state is the exact infinite-period pulse. A localized pulse has no period mean; the mean of the preceding periodic family is a different quantity.
+
+**Play transition** varies the equation parameter. It does not simulate time evolution. Wave values, readouts and sampled curves are numerical evaluations, not interval certificates or stability results.
+
+### Dispersive KS
+
+The named example is the dispersive slice
+
+```text
+v‴ + 4v″ + v′ + v²/2 + C = 0,
+```
+
+which satisfies `b² = 16μν` with `b = 4, μ = ν = 1`. Its smooth real periodic interval is `−18 < C < −8`. At `C = −18` the selected real oval tends to an asymmetric localized pulse; at `C = −8` it becomes constant. This identifies the displayed slice explicitly rather than suggesting generic elliptic waves for every KS equation. See [Eremenko’s meromorphic classification](https://arxiv.org/abs/nlin/0504053).
+
+## Rebuild and verify
+
+Quick rebuild of the page and precise Kawahara transition, using the existing verified atlas data:
+
+```sh
+python3 journeys.py
+```
+
+Recompute all interactive data and exact algebra:
 
 ```sh
 python3 -m pip install -r requirements.txt
 python3 build.py
-python3 test_profiles.py       # Node.js needed for the browser math engine
-python3 test_c4.py             # Independent C4 profile/ODE and sweep checks
-node browser_check.mjs         # Node >=22 and a local Chromium browser
 ```
 
-To rebuild only the interactive profile data and page, use `python3 profiles.py`.
-The [profile validation record](data/profile_checks.json) checks the JavaScript output against
-independent Taylor-jet substitutions into the full ODEs, as well as periods and analytic continuation
-through zeros. The [exact algebra checks](data/verification.json) verify the underlying families.
-Eleven sample jets too close to zeros for reliable fractional-power differentiation are explicitly
-reported separately; their power identities and the relevant zero continuations are still checked.
-Wave values and physical readouts in the interactive panel are numerical evaluations, not interval certificates.
+The default build produces interactive HTML, data, CSVs and validation fixtures. For changes to profile construction alone, run `python3 profiles.py`.
 
-## The atlas
+```sh
+python3 test_profiles.py    # independent Taylor jets, ODEs, characters and periods
+python3 test_c4.py          # independent C4 lattice, resonance and full ODE checks
+python3 test_journeys.py    # 110-digit references, pulse identity and window-independent readouts
+node browser_check.mjs     # Chromium: real clicks, controls, links, animation and mobile layout
+```
 
-Open the [offline interactive gallery](index.html), the [22-page PDF book](g2g3_atlas.pdf), or the
-[overview image](figures/atlas_overview.png). Every individual plate is also supplied as PNG, SVG,
-and PDF in [figures](figures/). The gallery lets you select a family, move its parameter, inspect
-the selected lattice points, and read the corresponding equation coefficients.
+The browser check uses Node ≥22 and a local Chromium installation. It detects common Playwright cache layouts; otherwise set `ATLAS_CHROME` to the executable. Set `ATLAS_URL` to check the published page with the same suite.
 
-For a concrete physical readout, see [Kawahara in wavelength–amplitude–mean coordinates](physical/README.md):
-[plots and profiles](physical/kawahara_physical_coordinates.png), an [interactive 3-D curve](physical/kawahara_physical.html),
-and the [solitary-pulse limit](physical/kawahara_pulse_limit.png).
+Validation records: [exact algebra](data/verification.json), [profile checks](data/profile_checks.json), [C4 checks](data/c4_checks.json), [pulse-transition checks](data/journey_checks.json), [browser checks](data/browser_check.json).
 
-The agreed range is **2 ≤ p ≤ 6, 2 ≤ n ≤ 7**. All **13** pairs satisfying the necessary pole
-balance `q = p/(n−1) ∈ Z_{>0}` are represented. Six companion slices make **19 pure-power plates**,
-supplemented by the C4 overview.
-The other 17 pairs are marked in the overview's coverage table. Here `p` is the order of the
-travelling-wave ODE; for an evolution equation integrated once, the PDE has order `p+1`.
+Eleven original fractional-power jets near zeros are reported as ill conditioned for floating-point differentiation; their power identities and analytic continuation through zeros are still tested. Curve clicking never substitutes an interpolated off-locus point for a solved wave. Period means and amplitudes use a full real wave period, independently of the plot window. Singular real-axis slices have no physical period mean or finite peak-to-trough amplitude.
 
-This is a standalone computational illustration of exact travelling-wave families. All algebraic
-identities needed to reproduce the displayed curves are included in this repository.
+## Repository layout
 
-## Pictures
-
-| (n,p) | Main plate | Additional slices |
-|---|---|---|
-| (2,2) | [KdV: the free-energy line](figures/n2_p2_kdv.png) | A continuum for one conservative equation |
-| (3,2) | [mKdV: a tilted energy line](figures/n3_p2_mkdv.png) | Character of order two |
-| (2,3) | [Kuramoto–Sivashinsky](figures/n2_p3_ks.png) | The compatibility condition is `b² = 16a` |
-| (4,3) | [Quartic flux: the threefold character](figures/n4_p3_quartic.png) | Dixon-type character space |
-| (2,4) | [Kawahara: the returning loop](figures/n2_p4_kawahara.png) | [Kawahara–KS with an odd derivative](figures/n2_p4_mixed.png) |
-| (3,4) | [Cubic fourth order: two lattice curves](figures/n3_p4_cubic_positive.png) | [Opposite constant-coefficient sign](figures/n3_p4_cubic_negative.png); [dispersive Swift–Hohenberg](figures/n3_p4_mixed.png) |
-| (5,4) | [Quintic: a fourfold contact](figures/n5_p4_quintic.png) | [Even operator, character two](figures/n5_p4_even.png) |
-| (2,5) | [Nikolaevskiy type: four algebraic branches](figures/n2_p5_quadratic_fifth.png) | Exact quartic condition and three recovered exceptional fibres |
-| (6,5) | [Sextic: a fivefold character](figures/n6_p5_sextic.png) | The `a₄=1` chart; the scaling pole `t=3` is excluded |
-| (2,6) | [Quadratic sixth order: a three-branch fold](figures/n2_p6_quadratic_sixth.png) | Exact cubic condition |
-| (3,6) | [Cubic sixth order: twisted branches](figures/n3_p6_cubic_twisted.png) | [The ordinary branch at `a₄=0`](figures/n3_p6_ordinary.png) |
-| (4,6) | [Quartic sixth order: a parabola](figures/n4_p6_quartic.png) | Ordinary wave `u=℘+1/168` |
-| (7,6) | [Septic: a sixfold character](figures/n7_p6_septic.png) | [Even operator, character two](figures/n7_p6_even.png) |
-
-The common physical reductions motivate the range. Quartic, sextic, and septic fluxes are included
-as polynomial extensions so that the low-order table has no omitted admissible pair; the table
-does not assert that every extension is a standard physical model. The C4 explorer separately
-adds the nonlinear derivative terms `v v''` and `(v')²`.
-
-## Reading the figures and counts
-
-All planes use the standard invariants of
-
-`X=℘(z;g₂,g₃), Y=℘′(z;g₂,g₃), Y²=4X³−g₂X−g₃`.
-
-The grey cusp is `Δ=g₂³−27g₃²=0`; the pale region has `Δ>0`. Points off the cusp are genuine
-elliptic lattices. Cusp points are degenerations, and the origin is the rational degeneration.
-The invariants belong to the **full twisted period lattice Γ**, as in the structure paper.
-A character of order `d` gives `d` poles in the ordinary period cell. In particular, the two cubic
-fourth-order curves must not be combined by confusing an ordinary lattice with its index-two cover.
-
-Colors encode the declared parameter, not discriminant sign. Diamonds mark real degeneration
-parameters after checking the discriminant; resultant candidates are filtered, so other waves
-at the same parameter are not automatically marked. Each figure has a separate enlarged view.
-Finite view windows can crop large branches, especially in the order-five character normalization.
-The CSVs retain all finite real points in the sampled parameter interval, including those outside
-the displayed window. The gallery explicitly reports when a selected point is outside the view.
-
-**A real point means real lattice invariants, not automatically a smooth, bounded real-valued
-physical wave.** The profile, amplitude normalization, and choice of a real slice still matter.
-The pure-power counts are of nonconstant meromorphic wave classes, modulo translation and phase,
-within the declared slice. C4 uses the representative counts described above.
-Complex conjugate lattices can leave this real plane without the corresponding
-complex meromorphic waves ceasing to exist.
-
-There are two distinct uses of the slider:
-
-- **A fully fixed equation for each parameter.** Kawahara has two real lattice solutions for
-  `|a|<13/6`, one degenerate solution at equality, and no real lattice solutions beyond it
-  (two complex conjugate solutions remain). The even cubic fourth-order operator also has two
-  character branches; in the `a₀=+1` slice they merge at `a=±5/2`. The other compatible families
-  with a one-wave bound have one wave per displayed fixed equation.
-- **An equation reconstructed along its compatibility locus.** For quadratic orders five and
-  six, and the twisted cubic sixth-order slice, different algebraic roots at one slider value
-  generally give different remaining coefficients. The small chart says **compatible coefficient
-  choices**, not “four waves of one equation.” The full coefficients and integration constant
-  are shown in the gallery and recorded in each CSV. Coalescing algebraic roots are counted once.
-
-For `p=2` the two plates instead vary the first integral of **one conservative equation**. Each
-such equation carries infinitely many waves. Mixed second-order exceptions can have meromorphic
-solutions outside the elliptic/exponential/rational class; these are not claimed to be represented
-by a lattice plane. Counts refer to the full set of coefficients in the stated construction, not just to one
-projection of its coefficient locus.
-
-The atlas covers **every pair in the agreed finite range**, with explicitly declared normalized
-coefficient slices. It is not a global decomposition of every high-dimensional coefficient space,
-nor a catalogue of all independent rational/exponential fronts off the elliptic compatibility locus.
-For example, the separate KS fronts in the earlier picture are not extra points on its elliptic line.
-
-## Equations and normalization
-
-Except for the familiar physical KS formula, pure-power profiles have leading Laurent coefficient one:
-
-`P(D)u − K uⁿ + C = 0,  K = (−1)^p (q)_p`.
-
-The integration constant `C` is used only for quadratic nonlinearities, in the shifted form
-with zero linear coefficient. To restore the paper's `vⁿ/n` convention, put `v=c u` with
-`c^(n−1)=−nK`; its integration constant is `cC`. For odd nonlinearities this amplitude can be
-complex. A dilation `uλ(z)=λ^q u(λz)` changes
-`a_j → λ^(p−j)a_j`, `g₂ → λ⁴g₂`, `g₃ → λ⁶g₃`.
-
-All exact formulas, operator coefficients, profiles/powers, intervals, and normalization choices
-are in [models.json](data/models.json), generated by [models.py](models.py). The CSV operator column
-is in increasing order `[a₀,a₁,…,a_{p−1},1]`; the next column is the additive constant. For the KS
-plate it is the displayed physical equation `v‴+4v″+v′+v²/2+C=0`.
-
-Three useful explicit examples:
-
-1. **Kawahara:**
-   `662158224 g₂² − 653016 a² g₂ + 1457 a⁴ − 28561 = 0`,
-   `g₃ = a(31a²−42588g₂)/4745520`.
-   Its exact coalescences are `(g₂,g₃)=(1/432, ±1/46656)`.
-2. **Cubic fourth order:** write `b=a₂/60`, `γ=a₀/360−b²`. The ordinary branch is
-   `(20γ,20b(b²−γ))`; the twisted branch is
-   `(20b²−40γ/3,−8b³+80bγ/3)`.
-3. **Quintic fourth order, `a₃=1`:**
-   `g₂=(1600a²−240a−39)/120000`,
-   `g₃=(40a−9)(1600a²−2160a+441)/216000000`,
-   `Δ=(4a−1)(40a−11)^4/1600000000000`.
-   The fourth-order contact is not a self-intersecting loop.
-
-The new higher-order ordinary branches are obtained by exact substitution in the Weierstrass
-coordinate ring. Characters of orders 3–6 use a torsion divisor `div(F)=mQ−mO`, with `u=F^(1/m)`.
-The included [torsion constructor](elliptic_divisor.py) checks exact order
-and constructs `F` by elliptic-curve addition. The Tate equations used before coefficient scaling are:
-
-| Character order m | Weierstrass equation with Q=(0,0) |
+| Files | Purpose |
 |---|---|
-| 3 | `y²+xy+t y=x³` |
-| 4 | `y²+xy−t y=x³−t x²` |
-| 5 | `y²+(1−t)xy−t y=x³−t x²` |
-| 6 | `y²+(1−t)xy−t(1+t)y=x³−t(1+t)x²` |
+| `gallery_template.html`, `atlas.css` | Accessible page structure and responsive styling |
+| `atlas_ui.js`, `atlas_plot.js`, `atlas_cases.js` | Scene controls, interactive canvas plots and curated equations |
+| `wave_math.js`, `c4_math.js`, `c4_ui.js` | Jacobi/Weierstrass profiles and the C4 constructor |
+| `models.py`, `derive.py`, `boundaries.py`, `verify.py` | Exact families, exceptional fibres and algebraic checks |
+| `render.py`, `profiles.py`, `journeys.py` | Interactive data, analytic profile metadata and page compilation |
+| `data/` | Reproducible formulas, solved frames, CSVs and validation records |
+| `physical/` | Independent Kawahara calculations and the [interactive observable-coordinate explorer](physical/kawahara_physical.html) |
 
-Coordinates are converted to `Y²=4X³−g₂X−g₃` before plotting. Principal-part cancellation determines
-the operator; a holomorphic function with the same nontrivial finite character must vanish, which
-explains why those finite equations give a global wave. The formulas and exact-order checks are
-in [derived_tate.json](data/derived_tate.json).
+The static publication artifacts in `figures/` and `g2g3_atlas.pdf` are retained as an archive. They are not loaded by the explorer. Rebuild them explicitly with `python3 render.py --figures` or `python3 c4.py --figures`.
 
-For quadratic order five, a linear readout denominator vanishes at `a=−1/7,−8/441,26/49`.
-[boundaries.py](boundaries.py) returns to the undivided polynomial equations at these parameters
-and recovers the finite fibres. They are included in the plots and verified separately. The
-[boundary record](data/boundaries.json) also stores the exact elimination factors used to find
-folds and cusp contacts of all three implicit families.
+GitHub Pages serves the repository root of `main`, with `.nojekyll`. The page embeds its mathematical data to support `file://` viewing and uses only local JavaScript and CSS assets.
 
-## Verification and reproduction
-
-The [verification record](data/verification.json) contains exact checks of the full differential
-equations at rational parameter values, including **all algebraic roots** of each implicit matching
-polynomial, eight degenerate operators checked directly after rational-in-exponential substitution,
-and a negative control that rejects a perturbed off-locus point. These are exact substitutions,
-not floating-point residual fits. The generic formula derivations are retained separately.
-The sampled curves and isolated high-degree boundary coordinates are numerical, not interval
-certificates. The displayed counts are those of the stated algebraic constructions. Completeness beyond
-these explicitly constructed families is a separate theoretical question.
-
-Run everything from any directory:
-
-```sh
-python3 /path/to/meromorphic-wave-atlas/build.py
-```
-
-Or run the stages separately from this directory:
-
-```sh
-python3 derive.py ordinary
-python3 derive.py twisted
-python3 derive.py tate
-python3 derive.py mixed
-python3 boundaries.py
-python3 verify.py
-python3 c4.py
-python3 render.py
-```
-
-Dependencies: Python, SymPy, NumPy, SciPy, and Matplotlib; see [requirements.txt](requirements.txt).
-The gallery itself requires none of them and works directly from its HTML file. The optional
-`node browser_check.mjs` checks all 20 explorer modes, 60 slider positions, the exact Kawahara
-coalescences, the KS smooth/singular view regression, C4 presets and coefficient controls,
-free-coordinate resonances, the Lax pulse, complex profiles, shared links, CSV export, and
-desktop/mobile layout. It uses a locally installed Chromium; set
-`ATLAS_CHROME` if needed. See [browser_check.json](data/browser_check.json).
-
-The mathematical conventions are the standard Weierstrass equation `Y²=4X³−g₂X−g₃` and the monic
-pure-power wave equation displayed above. The construction files, exact identities, and
-numerical profile checks document the specific solution families shown here. This explorer is
-a computational illustration, not a stability analysis or a new theorem about all travelling waves.
+For coefficient conventions, coverage, characters, and count semantics, see [Mathematical scope](docs/mathematics.md). For the physical Kawahara normalization and limiting observables, see [the independent calculation](physical/README.md).

@@ -1,209 +1,484 @@
 <!doctype html>
 <html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Travelling waves · the g₂,g₃ atlas</title>
-<meta name="description" content="Explore exact meromorphic travelling waves: select an equation, vary its parameters, and see its elliptic lattice and corresponding wave profile.">
-<style>
-  :root{color-scheme:light;--paper:#f8f5ed;--ink:#203344;--muted:#687581;--line:#dce2df;--teal:#177989;--orange:#d86849}
-  *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
-  main{max-width:1320px;margin:auto;padding:52px 34px 80px}a{color:var(--teal);text-underline-offset:4px}
-  .eyebrow{letter-spacing:.13em;text-transform:uppercase;font-size:12px;color:var(--muted)}h1{font-family:Georgia,serif;font-size:clamp(36px,5.2vw,66px);font-weight:400;line-height:1.08;margin:14px 0 22px}
-  h2{font-size:25px;font-weight:500;margin:0 0 6px}h3{font-size:18px;font-weight:500;margin:0}p{margin:10px 0}.intro{max-width:800px;color:var(--muted)}
-  .links{display:flex;gap:22px;flex-wrap:wrap;margin:24px 0 38px}.links a{font-size:14px}.explorer{border:1px solid var(--line);border-radius:12px;background:#fffdf8;padding:26px}
-  .headrow{display:flex;justify-content:space-between;gap:20px;align-items:start}.badge{white-space:nowrap;border:1px solid var(--line);border-radius:20px;padding:5px 15px;font-size:13px;color:var(--muted)}
-  label{font-size:13px;color:var(--muted)}select{font:inherit;background:white;color:var(--ink);padding:10px 14px;border:1px solid var(--line);border-radius:6px;max-width:100%;min-width:0;width:100%}.control,.readout>*,.coverage>*{min-width:0}#points{overflow-x:auto;max-width:100%}
-  .controls{display:grid;grid-template-columns:minmax(200px,1fr) minmax(250px,1.4fr);gap:25px;align-items:end;margin-top:22px}.control label{display:block;margin-bottom:7px}.sliderrow{display:flex;gap:15px;align-items:center}
-  .c4-panel{border-top:1px solid var(--line);margin-top:20px;padding-top:14px}.c4-panel summary{cursor:pointer;font-size:14px;color:var(--teal);margin-bottom:12px}.c4-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:12px}.c4-grid label{display:flex;flex-direction:column;gap:5px;min-width:0}.c4-wide{grid-column:span 2}.c4-grid input{min-width:0;width:100%;font:14px ui-monospace,monospace;padding:9px;border:1px solid var(--line);border-radius:5px;background:white;color:var(--ink)}.c4-grid select{font-size:13px;padding:8px}.c4-free{display:flex;align-items:end;gap:16px;flex-wrap:wrap}.c4-free label{font-size:13px}.c4-free input[type=text]{width:130px;display:block;margin-top:5px;padding:8px;border:1px solid var(--line);border-radius:5px;font:14px ui-monospace,monospace}.c4-error{color:#a04238;font-size:13px;margin:8px 0}.text-button{background:none;border:none;padding:0;color:var(--teal);font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
-  input[type=range]{accent-color:var(--teal);width:100%;min-width:50px}output{font-variant-numeric:tabular-nums;min-width:95px;text-align:right;font-size:14px}
-  .plotwrap{position:relative;overflow:hidden}.plots{display:grid;grid-template-columns:1fr 1.1fr;gap:25px;margin-top:25px}.plots>section{min-width:0}.plothead{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px}.plothead h3{font-size:16px}.plothead select{font-size:12px;padding:7px;width:auto;max-width:210px}canvas{display:block;width:100%;height:400px;margin:10px 0}.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:12px;color:var(--muted);margin-bottom:15px}.swatch{display:inline-block;width:24px;height:10px;margin-right:7px;background:#edf3e8}.cusp{background:#929ba3;height:2px;vertical-align:middle}.locus{background:linear-gradient(90deg,#177989,#beaa80,#ad3c63);height:3px;vertical-align:middle}
-  .profile-note{font-size:13px;color:var(--muted);min-height:42px}.stats{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}.stats span{color:var(--muted);display:block;font-size:11px}.stats strong{font-weight:500;font-variant-numeric:tabular-nums}.shortcuts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.shortcuts button{font:12px system-ui;border:1px solid var(--line);border-radius:16px;padding:6px 12px;background:#fffdf8;color:var(--teal);cursor:pointer}.shortcuts button:hover{background:#e7efea}.real-line{background:#177989;height:3px;vertical-align:middle}.imag-line{background:#d86849;height:3px;vertical-align:middle}
-  .readout{border-top:1px solid var(--line);padding-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:25px}.count{font-size:17px;color:var(--teal);margin:0 0 10px}.equation{font:14px/1.8 ui-monospace,monospace;overflow-wrap:anywhere;color:var(--ink)}.notes{font-size:14px;color:var(--muted)}
-  table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:5px 9px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}th:first-child,td:first-child{text-align:left}button.point{font:inherit;color:var(--teal);border:0;background:transparent;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
-  .galleryhead{display:flex;justify-content:space-between;align-items:center;margin:45px 0 20px;gap:20px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.card{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fffdf8}.card img{width:100%;display:block}.cardbody{padding:15px 18px 18px}.card p{font-size:13px;color:var(--muted);margin:5px 0 12px}.cardlinks{display:flex;gap:16px;font-size:13px}.card .title{font-size:15px;font-weight:500}
-  .coverage{margin-top:44px;display:grid;grid-template-columns:1fr 1.1fr;gap:50px}.coverage table{text-align:center;font-size:14px}.coverage td,.coverage th{text-align:center;height:42px;border:4px solid var(--paper);background:#eaece8}.coverage td.yes{background:#e6efe3}.fine{font-size:13px;color:var(--muted)}footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
-  @media(max-width:950px){.grid{grid-template-columns:repeat(2,1fr)}.coverage{gap:25px}.readout{grid-template-columns:minmax(0,1fr)}.controls{grid-template-columns:minmax(0,1fr)}.headrow{flex-wrap:wrap}.plots{grid-template-columns:minmax(0,1fr)}canvas{height:380px}}
-  @media(max-width:580px){main{padding:30px 14px 50px}.explorer{padding:17px}.grid{grid-template-columns:1fr}.coverage{grid-template-columns:1fr}.galleryhead{align-items:start;flex-direction:column}canvas{height:360px}.legend{gap:14px;font-size:11px}.badge{font-size:12px}.c4-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.c4-wide{grid-column:span 2}.c4-free{gap:12px}.c4-free input[type=text]{width:110px}}
-</style>
-<main>
-  <div class="eyebrow">The meromorphic travelling-wave papers · a visual companion</div>
-  <h1>Waves in the<br>plane of lattices.</h1>
-  <p class="intro">Thirteen pure-power pairs, nineteen coefficient slices, and an editable C4 family. Vary an equation and follow its lattice and wave profile. The loops, intersecting branches, and contacts with the cusp are computed from the polynomial wave conditions.</p>
-  <nav class="links" aria-label="Downloads"><a href="g2g3_atlas.pdf">The complete PDF book ↗</a><a href="figures/atlas_overview.png">Overview image ↗</a><a href="README.md">Equations &amp; reproduction ↗</a><a href="data/verification.json">Exact verification ↗</a><a href="physical/kawahara_physical.html">Kawahara in physical coordinates ↗</a></nav>
-  <section class="explorer" aria-labelledby="currentTitle">
-    <div class="headrow"><div><div class="eyebrow">Explore a coefficient slice</div><h2 id="currentTitle"></h2></div><div class="badge" id="badge"></div></div>
-    <div class="controls"><div class="control"><label for="family">Equation family</label><select id="family"></select></div><div class="control"><label for="position" id="paramLabel"></label><div class="sliderrow"><input type="range" id="position" min="0" value="0" aria-describedby="count"><output for="position" id="paramValue"></output></div></div></div>
-    <section id="c4-controls" class="c4-panel" hidden>
-      <details open><summary>C4 coefficients and sweep · v⁗ + A v v″ + B (v′)² + C v³ + a₂ v″ + a₀ v + a₀₀ = 0</summary>
-        <div class="c4-grid">
-          <label class="c4-wide">Core preset<select id="c4-preset"></select></label>
-          <label class="c4-wide">Sweep coefficient or free coordinate<select id="c4-sweep"></select></label>
-          <label>Sweep minimum<input id="c4-min" type="text" inputmode="decimal"></label>
-          <label>Sweep maximum<input id="c4-max" type="text" inputmode="decimal"></label>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meromorphic Wave Atlas · exact waves, living geometry</title>
+    <meta
+      name="description"
+      content="Explore Kawahara, KdV, dispersive KS and other exact travelling waves. Follow elliptic waves into solitary pulses, select any lattice curve, or build your own equation."
+    />
+    <meta name="theme-color" content="#f5f3ed" />
+    <link rel="stylesheet" href="atlas.css?v=3" />
+  </head>
+  <body>
+    <a class="skip-link" href="#explorer">Skip to the explorer</a>
+    <main>
+      <header class="site-header">
+        <a class="wordmark" href="#" id="home-link"
+          ><span class="brand-mark" aria-hidden="true">∿</span> Meromorphic
+          <span>Wave Atlas</span></a
+        >
+        <nav aria-label="Resources">
+          <a href="#guide">How to read the atlas</a
+          ><a href="https://github.com/migita/meromorphic-wave-atlas"
+            >Source ↗</a
+          >
+        </nav>
+      </header>
+      <section class="masthead">
+        <div>
+          <div class="eyebrow">Exact travelling waves · Alexander Migita</div>
+          <h1>A wave. A lattice.<br /><em>A whole family.</em></h1>
         </div>
-        <div class="c4-grid">
-          <label>A · v v″<input id="c4-A" type="text" inputmode="decimal"></label>
-          <label>B · (v′)²<input id="c4-B" type="text" inputmode="decimal"></label>
-          <label>C · v³<input id="c4-C" type="text" inputmode="decimal"></label>
-          <label>a₂ · v″<input id="c4-a2" type="text" inputmode="decimal"></label>
-          <label>a₀ · v<input id="c4-a0" type="text" inputmode="decimal"></label>
-          <label>a₀₀ · constant<input id="c4-a00" type="text" inputmode="decimal"></label>
-        </div>
-        <p class="fine">Real numbers and fractions such as 20/3 are accepted.</p>
-        <p class="fine" id="c4-free-title">Free coordinates select a member when the fixed equation carries a family.</p>
-        <div class="c4-free">
-          <label id="c4-field-beta">β · free background<input id="c4-beta" type="text" inputmode="decimal"></label>
-          <label id="c4-field-g2">g₂ · free invariant<input id="c4-g2" type="text" inputmode="decimal"></label>
-          <label id="c4-field-g3">g₃ · free invariant<input id="c4-g3" type="text" inputmode="decimal"></label>
-          <label><input id="c4-focus" type="checkbox"> Focus selected branch</label>
-        </div>
-        <p id="c4-error" class="c4-error" role="status"></p>
-      </details>
-    </section>
-    <div class="shortcuts" id="shortcuts"></div>
-    <div class="plots">
-      <section><div class="plothead"><h3>Lattice geometry</h3><span class="fine">● selected wave</span></div><div class="plotwrap"><canvas id="plot" aria-label="The g2,g3 lattice locus and the selected parameter's waves" role="img"></canvas></div>
-      <div class="legend"><span><i class="swatch locus"></i>parameter sweep</span><span><i class="swatch cusp"></i>Δ = 0</span><span><i class="swatch"></i>Δ &gt; 0</span></div></section>
-      <section><div class="plothead"><h3>Corresponding solution</h3><select id="profileMode" aria-label="Solution slice"><option value="regular">Pole-free slice</option><option value="axis">Meromorphic real axis</option></select></div>
-        <div class="plotwrap"><canvas id="wave" aria-label="The selected wave as a function of travelling coordinate z" role="img"></canvas></div>
-        <div class="legend" id="waveLegend"></div><p class="profile-note" id="profileNote" aria-live="polite"></p><div class="stats" id="profileStats"></div>
+        <p>
+          Follow a curve and watch a wave change. <br />Explore familiar
+          equations, find a solitary pulse, <br class="desktop-break" />or
+          choose the coefficients yourself.
+        </p>
       </section>
-    </div>
-    <div class="readout"><div><p class="count" id="count" aria-live="polite"></p><div id="points"></div><div class="equation" id="equation"></div></div><div class="notes" id="notes"></div></div>
-  </section>
-  <div class="galleryhead"><div><div class="eyebrow">Every picture, at full resolution</div><h2>The atlas plates</h2></div><label>Show order <select id="filter"><option value="all">All p = 2–6</option><option value="2">p = 2</option><option value="3">p = 3</option><option value="4">p = 4</option><option value="5">p = 5</option><option value="6">p = 6</option></select></label></div>
-  <div class="grid" id="gallery"></div>
-  <section class="coverage"><div><h2>Every low-order pure-power pair</h2><p class="fine">The entries are pole orders q = p/(n − 1). A dash means that the necessary integral pole balance fails.</p><table id="coverage" aria-label="Coverage of all n,p pairs"></table></div><div><h2>What a point means</h2><p class="notes">The invariants refer to the full twisted period lattice Γ. A character of order d gives d poles in an ordinary period cell. The pure-power atlas includes ordinary waves and characters of orders two through six.</p><p class="notes">Off the cusp the lattice is elliptic. On the cusp it degenerates; its origin is the rational limit. A real lattice does not alone guarantee a smooth, bounded real-valued physical profile.</p><p class="notes">Each pure-power panel declares a coefficient slice and counts meromorphic waves modulo translation and phase. In the higher-order implicit cases, different algebraic roots generally give different remaining coefficients; their displayed count is a count of compatible equations.</p><p class="notes">The C4 coefficient explorer adds nonlinear derivative terms. It constructs the sector v = α℘ + β and reports its displayed representatives and free coordinates. Opposite-sign profiles can share one lattice. Multiple-pole elliptic and genus-two solutions are outside that selected sector.</p></div></section>
-  <footer>By Alexander Migita · <a href="https://github.com/migita/meromorphic-wave-atlas">Source and reproducible calculations</a>. The downloaded explorer also works offline. Profiles solve the displayed equations; stability requires a separate calculation.</footer>
-</main>
-<script src="wave_math.js?v=2"></script>
-<script src="c4_math.js?v=1"></script>
-<script src="c4_ui.js?v=1"></script>
-<script>
-const ATLAS=__ATLAS_DATA__;
-const $=id=>document.getElementById(id), family=$('family'), slider=$('position'), canvas=$('plot'), ctx=canvas.getContext('2d');
-let current=0, selected=0, selectedBranch=null, preferredProfileMode='regular', lastProfile=null, restoringScene=false;
-const fmt=x=>x==null?'—':Number(x).toPrecision(6).replace(/\.?0+(e|$)/,'$1');
-const superscript=x=>String(x).split('').map(c=>({'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'}[c]||c)).join('');
-const palette=[[23,121,137],[75,143,156],[190,170,128],[229,151,97],[173,60,99]];
-function color(T,m){let z=Math.max(0,Math.min(.999999,(T-m.interval[0])/(m.interval[1]-m.interval[0])))*4,i=Math.floor(z),f=z-i;return `rgb(${palette[i].map((v,j)=>Math.round(v*(1-f)+palette[i+1][j]*f)).join(',')})`;}
-function niceTicks(a,b,n=5){let raw=(b-a)/n,p=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/p,step=(f<1.5?1:f<3.5?2:f<7.5?5:10)*p,out=[];for(let v=Math.ceil(a/step)*step;v<=b+step*1e-5;v+=step)out.push(Math.abs(v)<step*1e-7?0:v);return out;}
-function draw(){
-  const m=ATLAS[current],frame=m.frames[+slider.value],rect=canvas.getBoundingClientRect(),ratio=devicePixelRatio||1,W=rect.width,H=rect.height;
-  canvas.width=Math.round(W*ratio);canvas.height=Math.round(H*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);
-  ctx.clearRect(0,0,W,H);const P={l:76,r:15,t:18,b:60},w=W-P.l-P.r,h=H-P.t-P.b,[[xmin,xmax],[ymin,ymax]]=m.limits;
-  const px=x=>P.l+(x-xmin)/(xmax-xmin)*w,py=y=>P.t+h-(y-ymin)/(ymax-ymin)*h;
-  ctx.save();ctx.beginPath();ctx.rect(P.l,P.t,w,h);ctx.clip();
-  if(xmax>0){const start=Math.max(0,xmin),xs=Array.from({length:401},(_,i)=>start+(xmax-start)*i/400);ctx.fillStyle='#edf3e8';ctx.beginPath();xs.forEach((x,i)=>{const y=Math.sqrt(x*x*x/27);i?ctx.lineTo(px(x),py(y)):ctx.moveTo(px(x),py(y))});xs.slice().reverse().forEach(x=>ctx.lineTo(px(x),py(-Math.sqrt(x*x*x/27))));ctx.closePath();ctx.fill();
-    for(const sign of [-1,1]){ctx.strokeStyle='#929ba3';ctx.lineWidth=1.4;ctx.beginPath();xs.forEach((x,i)=>i?ctx.lineTo(px(x),py(sign*Math.sqrt(x*x*x/27))):ctx.moveTo(px(x),py(sign*Math.sqrt(x*x*x/27))));ctx.stroke();}}
-  const xt=niceTicks(xmin,xmax),yt=niceTicks(ymin,ymax);ctx.strokeStyle='#e1e6e3';ctx.lineWidth=.7;ctx.beginPath();xt.forEach(x=>{ctx.moveTo(px(x),P.t);ctx.lineTo(px(x),P.t+h)});yt.forEach(y=>{ctx.moveTo(P.l,py(y));ctx.lineTo(P.l+w,py(y))});ctx.stroke();
-  for(const tr of m.tracks){ctx.lineWidth=2.4;for(let i=1;i<tr.points.length;i++){const a=tr.points[i-1],b=tr.points[i];if(!a||!b)continue;if(tr.breaks.some(v=>a[2]<v&&b[2]>v))continue;if(Math.max(Math.abs(b[0]-a[0])/(xmax-xmin),Math.abs(b[1]-a[1])/(ymax-ymin))>.35)continue;ctx.strokeStyle=color((a[2]+b[2])/2,m);ctx.beginPath();ctx.moveTo(px(a[0]),py(a[1]));ctx.lineTo(px(b[0]),py(b[1]));ctx.stroke();}}
-  for(const tr of m.tracks)for(let i=0;i<tr.points.length;i++){const p=tr.points[i];if(p&&!tr.points[i-1]&&!tr.points[i+1]){ctx.fillStyle=color(p[2],m);ctx.beginPath();ctx.arc(px(p[0]),py(p[1]),3,0,Math.PI*2);ctx.fill();}}
-  frame.points.forEach((pt,i)=>{ctx.fillStyle=i===selected?'#203344':'#d86849';ctx.strokeStyle='#fffdf8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(px(pt.g2),py(pt.g3),i===selected?6:5,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();
-  ctx.strokeStyle='#bdc8c8';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(P.l,P.t);ctx.lineTo(P.l,P.t+h);ctx.lineTo(P.l+w,P.t+h);ctx.stroke();ctx.font='12px system-ui';ctx.fillStyle='#687581';ctx.textAlign='center';
-  xt.forEach(x=>ctx.fillText(fmt(x),px(x),P.t+h+22));ctx.textAlign='right';yt.forEach(y=>ctx.fillText(fmt(y),P.l-12,py(y)+4));
-  ctx.font='16px Georgia';ctx.textAlign='center';ctx.fillStyle='#203344';ctx.fillText('g₂',P.l+w/2,H-12);ctx.save();ctx.translate(19,P.t+h/2);ctx.rotate(-Math.PI/2);ctx.fillText('g₃',0,0);ctx.restore();
-  const off=frame.points.filter(p=>p.g2<xmin||p.g2>xmax||p.g3<ymin||p.g3>ymax).length;if(off){ctx.font='12px system-ui';ctx.textAlign='right';ctx.fillStyle='#687581';ctx.fillText(`${off} selected point${off>1?'s':''} outside this view`,W-P.r,P.t+13);}
-}
-function equation(pt,m){
-  if(m.kind==='c4')return C4.equation(m.frames[+slider.value].coefficients);
-  if(!pt)return 'The real lattice plane contains no selected wave at this parameter.';
-  const variable=m.variable||'u',scale=m.display_scale||1;
-  let out='D'+superscript(m.p);
-  for(let j=m.p-1;j>=0;j--){let a=pt.operator[String(j)]||0;if(Math.abs(a)<1e-13)continue;out+=' '+(a<0?'−':'+')+' '+fmt(Math.abs(a))+(j?' D'+(j>1?superscript(j):''):'');}
-  const nonlinear=pt.physical?.5:-m.K/Math.pow(scale,m.n-1),constant=(pt.constant||0)*scale;
-  out='('+out+')'+variable+' '+(nonlinear<0?'−':'+')+' '+(Math.abs(nonlinear-.5)<1e-14?variable+'²/2':fmt(Math.abs(nonlinear))+' '+variable+superscript(m.n));
-  if(constant)out+=' '+(constant<0?'−':'+')+' '+fmt(Math.abs(constant));
-  return out+' = 0';
-}
-function drawWave(){
-  const m=ATLAS[current],frame=m.frames[+slider.value],point=frame.points[selected],wave=$('wave'),c=wave.getContext('2d');
-  const rect=wave.getBoundingClientRect(),W=rect.width,H=rect.height,r=devicePixelRatio||1;
-  wave.width=Math.round(W*r);wave.height=Math.round(H*r);c.setTransform(r,0,0,r,0,0);c.clearRect(0,0,W,H);
-  if(!point){lastProfile=null;$('waveLegend').textContent='';$('profileStats').textContent='';$('profileNote').textContent='No real lattice is selected at this parameter.';c.font='14px system-ui';c.fillStyle='#687581';c.textAlign='center';c.fillText('No selected real lattice',W/2,H/2);return;}
-  const spec=point.profile,mode=WaveMath.actualMode(spec,preferredProfileMode);
-  $('profileMode').options[0].disabled=spec.geometry.type!=='rect';$('profileMode').value=mode;
-  const p=WaveMath.generate(spec,mode);lastProfile=p;
-  const P={l:72,r:15,t:18,b:60},w=W-P.l-P.r,h=H-P.t-P.b,[low,high]=p.range;
-  const px=x=>P.l+(x/p.width+.5)*w,py=y=>P.t+h-(y-low)/(high-low)*h;
-  c.save();c.beginPath();c.rect(P.l,P.t,w,h);c.clip();
-  c.lineWidth=.7;c.strokeStyle='#e1e6e3';c.beginPath();
-  const xt=niceTicks(-p.width/2,p.width/2,4),yt=niceTicks(low,high,5);
-  xt.forEach(x=>{c.moveTo(px(x),P.t);c.lineTo(px(x),P.t+h)});yt.forEach(y=>{c.moveTo(P.l,py(y));c.lineTo(P.l+w,py(y))});c.stroke();
-  if(p.mean!==null){c.setLineDash([4,4]);c.strokeStyle='#929ba3';c.beginPath();c.moveTo(P.l,py(p.mean));c.lineTo(P.l+w,py(p.mean));c.stroke();c.setLineDash([]);}
-  for(const [values,col,dash] of [[p.re,'#177989',[]],...(p.anyImag?[[p.im,'#d86849',[5,3]]]:[])]){
-    c.strokeStyle=col;c.lineWidth=2.2;c.setLineDash(dash);c.beginPath();let previous=null;
-    for(let i=0;i<values.length;i++){const v=values[i];if(v===null||!Number.isFinite(v)){previous=null;continue;}if(previous===null||Math.abs(v-previous)>4*(high-low))c.moveTo(px(p.x[i]),py(v));else c.lineTo(px(p.x[i]),py(v));previous=v;}c.stroke();c.setLineDash([]);
-  }
-  c.strokeStyle='#c08068';c.lineWidth=1;c.setLineDash([3,4]);for(const x of p.poles){c.beginPath();c.moveTo(px(x),P.t);c.lineTo(px(x),P.t+h);c.stroke();}c.setLineDash([]);c.restore();
-  c.strokeStyle='#bdc8c8';c.beginPath();c.moveTo(P.l,P.t);c.lineTo(P.l,P.t+h);c.lineTo(P.l+w,P.t+h);c.stroke();
-  c.font='12px system-ui';c.fillStyle='#687581';c.textAlign='center';xt.forEach(x=>c.fillText(fmt(x),px(x),P.t+h+22));c.textAlign='right';yt.forEach(y=>c.fillText(fmt(y),P.l-9,py(y)+4));
-  c.font='15px Georgia';c.fillStyle='#203344';c.textAlign='center';c.fillText('Travelling coordinate z',P.l+w/2,H-12);c.save();c.translate(17,P.t+h/2);c.rotate(-Math.PI/2);c.fillText(spec.variable+'(z)',0,0);c.restore();
-  $('waveLegend').innerHTML=p.anyImag?`<span><i class="swatch real-line"></i>Re ${spec.variable}</span><span><i class="swatch imag-line"></i>Im ${spec.variable}</span>`:`<span><i class="swatch real-line"></i>${spec.variable}(z)</span>`;
-  let note=p.constant?'Constant limit of the regular slice. Choose “Meromorphic real axis” to see the nonconstant degenerate solution.':p.mode==='axis'?'Real-axis meromorphic profile. Dashed vertical lines mark poles; the vertical range is clipped.':p.anyImag?'A complex-valued solution on a pole-free real-parameter slice; both components are shown.':spec.geometry.period===null?'Regular hyperbolic degeneration, shown on a finite spatial window.':'Smooth real periodic solution. The dashed horizontal line is its period average.';
-  if(preferredProfileMode==='regular'&&spec.geometry.type==='one')note='This lattice has no bounded real oval. '+note;
-  if(m.slug==='n2_p3_ks'){
-    if(frame.t>-18&&frame.t<-8&&p.mode==='axis')note+=' A smooth real periodic representative is available: choose “Pole-free slice”.';
-    if(frame.t<-18-1e-10||frame.t>-8+1e-10)note+=' For this KS family, the smooth periodic interval is −18 < C < −8.';
-  }
-  $('profileNote').textContent=note;
-  let stats=`<div><span>${p.constant?'Profile':'Full real period'}</span><strong>${p.constant?'Constant limit':p.period?fmt(p.period):spec.geometry.type==='rational'?'Rational':'∞'}</strong></div>`;
-  if(p.amplitude!==null)stats+=`<div><span>Peak-to-trough amplitude</span><strong>${fmt(p.amplitude)}</strong></div>`;
-  if(p.mean!==null)stats+=`<div><span>Period mean</span><strong>${fmt(p.mean)}</strong></div>`;
-  else if(p.mode==='regular'&&!p.anyImag&&spec.geometry.period===null)stats+=`<div><span>Endpoint values (window)</span><strong>${fmt(p.re[0])} → ${fmt(p.re[p.re.length-1])}</strong></div>`;
-  $('profileStats').innerHTML=stats;
-}
-function update(){const m=ATLAS[current],frame=m.frames[+slider.value];
-  let found=frame.points.findIndex(p=>p.branch===selectedBranch);
-  if(found<0)found=Math.max(0,frame.points.findIndex(p=>p.delta>0));
-  selected=found;if(frame.points[selected])selectedBranch=frame.points[selected].branch;
-  if(m.kind==='c4')C4Panel.onFrame(m,frame,frame.points[selected]);
-  $('paramValue').value=fmt(frame.t);const n=frame.points.length;
-  $('count').textContent=m.kind==='c4'?C4Panel.count(frame):m.fixed_equation?'One fixed equation · infinitely many energy levels':m.count_kind==='equations'?`${n} real compatible coefficient choice${n===1?'':'s'} at this parameter`:`${n} distinct real lattice solution${n===1?'':'s'} at this parameter`;
-  $('points').innerHTML=n?'<table><thead><tr><th>Wave</th><th>g₂</th><th>g₃</th><th>Δ</th></tr></thead><tbody>'+frame.points.map((p,i)=>{let scale=Math.max(Math.abs(p.g2**3),Math.abs(27*p.g3*p.g3),1e-40),sign=Math.abs(p.delta)/scale<1e-7?'0':p.delta>0?'> 0':'< 0',label=m.kind==='c4'?C4Panel.pointLabel(p):`${i+1} · χ order ${p.character}`;return `<tr><td><button class="point" data-index="${i}">${i===selected?'● ':''}${label}</button></td><td>${fmt(p.g2)}</td><td>${fmt(p.g3)}</td><td>${sign}</td></tr>`;}).join('')+'</tbody></table>':'';
-  if(m.kind==='c4')C4Panel.renderNotes(frame);
-  $('points').querySelectorAll('button').forEach(b=>b.onclick=()=>{selectedBranch=frame.points[+b.dataset.index].branch;update()});$('equation').textContent=equation(frame.points[selected],m);draw();drawWave();saveSceneLink();
-}
-function toParameter(value){const m=ATLAS[current];let nearest=0;for(let j=1;j<m.frames.length;j++)if(Math.abs(m.frames[j].t-value)<Math.abs(m.frames[nearest].t-value))nearest=j;slider.value=nearest;update();}
-function choose(index){
-  current=index;selected=0;selectedBranch=null;preferredProfileMode='regular';
-  const m=ATLAS[index];family.value=String(index);$('currentTitle').textContent=m.title;$('badge').textContent=m.kind==='c4'?'C4 · order 4 · double poles':`(n, p) = (${m.n}, ${m.p}) · q = ${m.q}`;$('paramLabel').textContent=m.parameter;
-  slider.max=m.frames.length-1;slider.value=m.kind==='c4'?m.selectedIndex:Math.floor(m.frames.length*.5);
-  if(m.kind==='c4'){C4Panel.show();C4Panel.shortcuts();update();return;}else C4Panel.hide();
-  $('notes').innerHTML=m.notes.map(n=>`<p>${n}</p>`).join('')+`<p><a href="figures/${m.slug}.png">Full plate and enlarged detail ↗</a> · <a href="data/${m.slug}.csv">CSV</a></p>`;
-  const shortcuts=m.slug==='n2_p4_kawahara'?[[-13/6,'Solitary limit · a = −13/6'],[0,'a = 0'],[13/6,'Upper contact · a = 13/6']]:
-    m.slug==='n2_p3_ks'?[[-18,'Pulse limit · C = −18'],[-13,'Smooth periodic · C = −13'],[-8,'Constant limit · C = −8']]:[];
-  $('shortcuts').innerHTML=shortcuts.map(([v,label])=>`<button data-parameter="${v}">${label}</button>`).join('');
-  $('shortcuts').querySelectorAll('button').forEach(b=>b.onclick=()=>{preferredProfileMode='regular';toParameter(+b.dataset.parameter)});update();
-}
-function saveSceneLink(){
-  if(restoringScene)return;
-  const m=ATLAS[current],frame=m.frames[+slider.value],p=new URLSearchParams({family:m.slug,parameter:String(frame.t),view:preferredProfileMode});
-  if(frame.points[selected])p.set('branch',String(frame.points[selected].branch));
-  if(m.kind==='c4')C4Panel.toParams(p);
-  try{history.replaceState(null,'','#'+p.toString())}catch(error){/* Some file viewers disallow history changes. */}
-}
-function restoreSceneLink(){
-  const p=new URLSearchParams(location.hash.slice(1)),index=ATLAS.findIndex(m=>m.slug===p.get('family'));
-  if(index<0)return false;
-  restoringScene=true;
-  try{
-    if(ATLAS[index].kind==='c4')C4Panel.restore(p);
-    choose(index);
-    if(p.has('parameter')&&Number.isFinite(Number(p.get('parameter'))))toParameter(Number(p.get('parameter')));
-    preferredProfileMode=p.get('view')==='axis'?'axis':'regular';
-    if(p.has('branch')&&Number.isFinite(Number(p.get('branch'))))selectedBranch=Number(p.get('branch'));
-    update();
-  }finally{restoringScene=false;}
-  saveSceneLink();return true;
-}
-function hitPoint(event){const m=ATLAS[current],rect=canvas.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top,[[x0,x1],[y0,y1]]=m.limits;let best=null,dist=18;for(const point of m.frames[+slider.value].points){const px=76+(point.g2-x0)/(x1-x0)*(rect.width-91),py=18+(y1-point.g3)/(y1-y0)*(rect.height-78),d=Math.hypot(px-x,py-y);if(d<dist){best=point;dist=d;}}return best;}
-canvas.onclick=event=>{const point=hitPoint(event);if(point){selectedBranch=point.branch;update()}};canvas.onmousemove=event=>{canvas.style.cursor=hitPoint(event)?'pointer':'default'};canvas.title='Click a lattice point to plot its solution';
-C4Panel.register(ATLAS);
-ATLAS.forEach((m,i)=>{const option=document.createElement('option');option.value=i;option.textContent=m.kind==='c4'?m.title:`(${m.n},${m.p}) ${m.title}`;family.appendChild(option)});
-family.onchange=()=>choose(+family.value);slider.oninput=update;$('profileMode').onchange=()=>{preferredProfileMode=$('profileMode').value;drawWave();saveSceneLink()};new ResizeObserver(()=>{draw();drawWave()}).observe(canvas);
-window.addEventListener('hashchange',restoreSceneLink);
-function cards(){const val=$('filter').value;$('gallery').innerHTML=ATLAS.filter(m=>val==='all'||m.p===+val).map(m=>`<article class="card"><a href="figures/${m.slug}.png"><img loading="lazy" src="figures/${m.slug}.png" alt="${m.title}: its g2,g3 lattice locus, enlarged detail, and count"></a><div class="cardbody"><div class="title">${m.title}</div><p>${m.kind==='c4'?'C4 · editable affine-℘ sector':`(n, p) = (${m.n}, ${m.p}) · ${m.primary?'main atlas':'companion slice'}`}</p><div class="cardlinks"><a href="figures/${m.slug}.png">PNG</a><a href="figures/${m.slug}.svg">SVG</a><a href="figures/${m.slug}.pdf">PDF</a><a href="#currentTitle" data-explore="${ATLAS.indexOf(m)}">Explore</a></div></div></article>`).join('');$('gallery').querySelectorAll('[data-explore]').forEach(a=>a.onclick=event=>{event.preventDefault();choose(+a.dataset.explore);$('currentTitle').scrollIntoView({block:'start',behavior:'smooth'})});}
-$('filter').onchange=cards;cards();let table='<tr><th>n \\ p</th>'+[2,3,4,5,6].map(p=>`<th>${p}</th>`).join('')+'</tr>';for(let n=2;n<=7;n++){table+=`<tr><th>${n}</th>`;for(let p=2;p<=6;p++){const m=ATLAS.find(m=>m.n===n&&m.p===p&&m.primary);table+=m?`<td class="yes"><a href="figures/${m.slug}.png">${p/(n-1)}</a></td>`:'<td>—</td>';}table+='</tr>';}$('coverage').innerHTML=table;if(!restoreSceneLink())choose(ATLAS.findIndex(m=>m.slug==='n2_p4_kawahara'));
-</script>
+      <div class="modebar">
+        <div class="mode-tabs" role="tablist" aria-label="Ways to explore">
+          <button
+            id="discover-tab"
+            role="tab"
+            aria-selected="true"
+            aria-controls="discover-panel"
+          >
+            Discover <span>Curated equations</span></button
+          ><button
+            id="lab-tab"
+            role="tab"
+            aria-selected="false"
+            aria-controls="lab-panel"
+            tabindex="-1"
+          >
+            Equation lab <span>Your coefficients</span>
+          </button>
+        </div>
+        <div class="scene-actions">
+          <button id="reset-scene" class="quiet-button">Reset view</button
+          ><button id="share-scene" class="outline-button">Copy link ↗</button
+          ><span id="share-status" class="sr-only" role="status"></span>
+        </div>
+      </div>
+      <div class="workspace">
+        <aside class="sidebar" aria-label="Choose an equation">
+          <section
+            id="discover-panel"
+            role="tabpanel"
+            aria-labelledby="discover-tab"
+          >
+            <div class="sidebar-heading">
+              <span class="eyebrow">Worth exploring</span
+              ><span class="fine">01—07</span>
+            </div>
+            <div id="cases" class="case-list"></div>
+            <details class="all-families">
+              <summary>All 19 coefficient slices</summary>
+              <label for="family">Full pure-power atlas</label
+              ><select id="family"></select>
+              <p class="fine">
+                Ordinary waves and finite characters through order six.
+              </p>
+            </details>
+          </section>
+          <section
+            id="lab-panel"
+            role="tabpanel"
+            aria-labelledby="lab-tab"
+            hidden
+          >
+            <div class="eyebrow">Make an equation</div>
+            <h2 class="sidebar-title">Choose the terms.</h2>
+            <p class="fine">
+              Start from a supported template. Zero coefficients remove a term;
+              the leading derivative stays monic.
+            </p>
+            <label for="lab-family">Equation template</label
+            ><select id="lab-family">
+              <option value="c4">C4 · cubic and derivative terms</option>
+              <option value="n2_p4_kawahara">
+                Kawahara · quadratic, even derivatives
+              </option>
+              <option value="n2_p3_ks">
+                Dispersive KS · compatible elliptic slice
+              </option>
+              <option value="n2_p2_kdv">
+                KdV · conservative energy family
+              </option>
+            </select>
+            <div id="lab-slice">
+              <p class="fine" id="lab-constraint"></p>
+              <div id="lab-coefficients" class="fixed-coefficients"></div>
+              <p class="fine">
+                Edit the highlighted coordinate below the equation. The
+                remaining coefficients are fixed by this template.
+              </p>
+            </div>
+            <section id="c4-controls" class="c4-panel" hidden>
+              <label for="c4-preset">Start with a core</label
+              ><select id="c4-preset"></select>
+              <div class="coefficient-fields">
+                <label
+                  ><span>A <small>v v″</small></span
+                  ><input
+                    id="c4-A"
+                    type="text"
+                    inputmode="decimal"
+                    aria-label="A, coefficient of v v double prime" /></label
+                ><label
+                  ><span>B <small>(v′)²</small></span
+                  ><input
+                    id="c4-B"
+                    type="text"
+                    inputmode="decimal"
+                    aria-label="B, coefficient of v prime squared" /></label
+                ><label
+                  ><span>C <small>v³</small></span
+                  ><input
+                    id="c4-C"
+                    type="text"
+                    inputmode="decimal"
+                    aria-label="C, coefficient of v cubed" /></label
+                ><label
+                  ><span>a₂ <small>v″</small></span
+                  ><input
+                    id="c4-a2"
+                    type="text"
+                    inputmode="decimal"
+                    aria-label="a2, coefficient of v double prime" /></label
+                ><label
+                  ><span>a₀ <small>v</small></span
+                  ><input
+                    id="c4-a0"
+                    type="text"
+                    inputmode="decimal"
+                    aria-label="a0, coefficient of v" /></label
+                ><label
+                  ><span>a₀₀ <small>constant</small></span
+                  ><input
+                    id="c4-a00"
+                    type="text"
+                    inputmode="decimal"
+                    aria-label="a00, additive constant"
+                /></label>
+              </div>
+              <p class="fine">Fractions such as 20/3 are accepted.</p>
+              <label for="c4-sweep">Coordinate to sweep</label
+              ><select id="c4-sweep"></select>
+              <div class="range-fields">
+                <label
+                  >From<input
+                    id="c4-min"
+                    type="text"
+                    inputmode="decimal" /></label
+                ><label
+                  >To<input id="c4-max" type="text" inputmode="decimal"
+                /></label>
+              </div>
+              <p class="fine" id="c4-free-title">
+                This equation has free wave coordinates.
+              </p>
+              <div class="c4-free">
+                <label id="c4-field-beta"
+                  >β · background<input
+                    id="c4-beta"
+                    type="text"
+                    inputmode="decimal" /></label
+                ><label id="c4-field-g2"
+                  >g₂ · invariant<input
+                    id="c4-g2"
+                    type="text"
+                    inputmode="decimal" /></label
+                ><label id="c4-field-g3"
+                  >g₃ · invariant<input
+                    id="c4-g3"
+                    type="text"
+                    inputmode="decimal"
+                /></label>
+              </div>
+              <label class="check-label"
+                ><input id="c4-focus" type="checkbox" /> Focus selected
+                branch</label
+              >
+              <p id="c4-error" class="input-error" role="status"></p>
+              <p class="fine">
+                Constructed sector: v = α℘ + β. Odd derivative terms are zero.
+                Other elliptic sectors are outside this constructor.
+              </p>
+            </section>
+          </section>
+        </aside>
+        <section class="explorer" id="explorer" aria-labelledby="currentTitle">
+          <div class="explorer-heading">
+            <div>
+              <div id="case-kicker" class="eyebrow"></div>
+              <h2 id="currentTitle"></h2>
+            </div>
+            <div class="badge" id="badge"></div>
+          </div>
+          <p id="case-description" class="case-description"></p>
+          <div class="equation-block">
+            <div class="equation" id="equation"></div>
+            <span id="equation-context" class="fine"></span>
+          </div>
+          <div class="parameter-control">
+            <div class="parameter-heading">
+              <label for="position" id="paramLabel"></label>
+              <div class="parameter-entry">
+                <input
+                  id="parameter-input"
+                  type="text"
+                  inputmode="decimal"
+                  aria-label="Set the parameter, fractions accepted"
+                /><output
+                  for="position"
+                  id="paramValue"
+                  class="sr-only"
+                ></output>
+              </div>
+            </div>
+            <input
+              type="range"
+              id="position"
+              min="0"
+              value="0"
+              aria-describedby="count parameter-status"
+            />
+            <div class="range-labels">
+              <span id="parameter-min"></span
+              ><span id="parameter-status" role="status"></span
+              ><span id="parameter-max"></span>
+            </div>
+          </div>
+          <div class="shortcuts" id="shortcuts"></div>
+          <div class="plot-tools">
+            <div
+              id="branch-choices"
+              class="branch-choices"
+              role="group"
+              aria-label="Select a wave branch"
+            ></div>
+            <span id="wave-status" class="wave-status"></span>
+          </div>
+          <div class="plots">
+            <section class="plot-section lattice-section">
+              <div class="plothead">
+                <h3>Lattice geometry <span>g₂, g₃</span></h3>
+                <div class="zoom-tools" role="group" aria-label="Lattice zoom">
+                  <button id="zoom-in" aria-label="Zoom in">+</button
+                  ><button id="zoom-out" aria-label="Zoom out">−</button
+                  ><button id="zoom-fit">Fit</button>
+                </div>
+              </div>
+              <div class="plotwrap" id="lattice-wrap">
+                <canvas
+                  id="plot"
+                  tabindex="0"
+                  aria-label="Interactive lattice curve. Click to select a wave, drag to pan, plus or minus to zoom. Arrow keys change parameter or branch."
+                ></canvas
+                ><span class="hover-dot" id="lattice-dot" hidden></span>
+                <div class="plot-tooltip" id="lattice-tooltip" hidden></div>
+              </div>
+              <div class="legend">
+                <span><i class="swatch locus"></i>parameter</span
+                ><span><i class="swatch cusp"></i>Δ = 0</span
+                ><span><i class="swatch oval"></i>Δ &gt; 0</span>
+              </div>
+              <p class="plot-hint">
+                Click any curve · drag to pan · + / − to zoom
+              </p>
+            </section>
+            <section class="plot-section wave-section">
+              <div class="plothead">
+                <h3>Wave profile <span id="wave-variable">v(z)</span></h3>
+                <select id="profileMode" aria-label="Solution slice">
+                  <option value="regular">Pole-free slice</option>
+                  <option value="axis">Meromorphic real axis</option>
+                </select>
+              </div>
+              <div class="plotwrap" id="wave-wrap">
+                <canvas
+                  id="wave"
+                  tabindex="0"
+                  aria-label="Interactive wave profile. Click to pin a value, or use the coordinate input below."
+                ></canvas
+                ><span class="crosshair" id="wave-crosshair" hidden></span
+                ><span class="hover-dot" id="wave-dot" hidden></span>
+                <div class="plot-tooltip" id="wave-tooltip" hidden></div>
+              </div>
+              <div class="legend" id="waveLegend"></div>
+              <div class="wave-controls">
+                <label
+                  >Window<select id="window-mode">
+                    <option value="auto">Two lattice periods</option>
+                    <option value="fixed">Common spatial scale</option>
+                  </select></label
+                ><label id="span-field" hidden
+                  >Width<input
+                    id="window-span"
+                    type="text"
+                    inputmode="decimal"
+                    value="60" /></label
+                ><label class="check-label" id="pulse-reference-field"
+                  ><input id="pulse-reference" type="checkbox" /> Solitary
+                  limit</label
+                >
+              </div>
+              <div class="probe">
+                <label for="probe-input">Probe z =</label
+                ><input
+                  id="probe-input"
+                  type="text"
+                  inputmode="decimal"
+                  placeholder="Click the wave"
+                /><output id="probe-value" aria-live="polite">—</output
+                ><button
+                  id="probe-clear"
+                  class="quiet-button"
+                  aria-label="Clear pinned wave value"
+                >
+                  ×
+                </button>
+              </div>
+            </section>
+          </div>
+          <div class="stats" id="profileStats"></div>
+          <p class="profile-note" id="profileNote" aria-live="polite"></p>
+          <section
+            class="journey"
+            id="pulse-journey"
+            hidden
+            aria-label="Kawahara solitary pulse limit"
+          >
+            <div class="journey-heading">
+              <div>
+                <span class="eyebrow">Follow the limit</span>
+                <h3>A periodic train becomes one pulse.</h3>
+              </div>
+              <button
+                id="journey-play"
+                class="outline-button"
+                aria-pressed="false"
+              >
+                Play transition
+              </button>
+            </div>
+            <label for="journey-position" class="sr-only"
+              >Separation along the Kawahara pulse limit</label
+            ><input id="journey-position" type="range" min="0" value="0" />
+            <div class="journey-labels">
+              <span>Periodic train</span><span id="journey-value"></span
+              ><span>Solitary pulse</span>
+            </div>
+            <p class="fine" id="journey-note">
+              A common spatial scale makes the separating pulses visible. The
+              orange curve is the exact solitary limit.
+            </p>
+          </section>
+          <p class="count" id="count" aria-live="polite"></p>
+          <details class="math-details">
+            <summary>
+              Lattice values, equation notes &amp; sources
+              <span aria-hidden="true">+</span>
+            </summary>
+            <div class="readout">
+              <div id="points"></div>
+              <div class="notes" id="notes"></div>
+            </div>
+            <div id="case-sources" class="source-links"></div>
+            <div class="verification-links">
+              <span
+                >Exact identities checked · profiles evaluated numerically</span
+              ><a href="data/verification.json">Algebra record ↗</a
+              ><a href="data/profile_checks.json">Profile checks ↗</a
+              ><button id="download-wave" class="text-button">Wave CSV ↓</button
+              ><button id="download-sweep" class="text-button">
+                Lattice CSV ↓
+              </button>
+            </div>
+          </details>
+        </section>
+      </div>
+      <section class="guide" id="guide">
+        <div>
+          <div class="eyebrow">A little geometry goes a long way</div>
+          <h2>How to read the atlas.</h2>
+        </div>
+        <div>
+          <h3>A curve is a family</h3>
+          <p>
+            Select anywhere on a curve to choose its parameter and branch. The
+            wave, equation and readouts follow together. Colors run from the
+            sweep’s beginning to its end.
+          </p>
+        </div>
+        <div>
+          <h3>The cusp is a limit</h3>
+          <p>
+            On Δ = g₂³ − 27g₃² = 0, an elliptic lattice degenerates. A real
+            pole-free slice can approach a solitary pulse or a constant. Real
+            invariants alone do not guarantee a smooth real wave.
+          </p>
+        </div>
+        <div>
+          <h3>Know what varies</h3>
+          <p>
+            KdV’s energy and C4’s free wave coordinates can vary within one
+            equation. Kawahara’s dispersion and KS’s integration constant change
+            the equation. Higher-order compatibility branches can represent
+            different equations.
+          </p>
+        </div>
+      </section>
+      <details class="coverage-details">
+        <summary>
+          Full atlas coverage
+          <span
+            >13 admissible pure-power pairs · 19 slices · editable C4
+            sector</span
+          >
+        </summary>
+        <div class="coverage">
+          <div>
+            <p class="fine">
+              Click a pole order to explore. A dash means the necessary integral
+              pole balance q = p/(n − 1) fails.
+            </p>
+            <table id="coverage" aria-label="Coverage of all n,p pairs"></table>
+          </div>
+          <p class="fine">
+            The lattice is the full twisted period lattice Γ. A character of
+            order d gives d poles in an ordinary period cell. Counts use the
+            declared sector and normalization. C4 displays affine-℘
+            representatives; multiple-pole and genus-two sectors are outside it.
+            The plots describe travelling profiles, with no stability claim.
+          </p>
+        </div>
+      </details>
+      <footer>
+        <span
+          >Meromorphic Wave Atlas <span class="footer-dot">·</span> Alexander
+          Migita</span
+        >
+        <div>
+          <a href="README.md">Equations &amp; reproduction</a
+          ><a href="https://github.com/migita/meromorphic-wave-atlas"
+            >GitHub ↗</a
+          ><span>Local assets · works offline</span>
+        </div>
+      </footer>
+    </main>
+    <script src="wave_math.js?v=3"></script>
+    <script src="c4_math.js?v=1"></script>
+    <script>
+      const ATLAS = __ATLAS_DATA__;
+      const JOURNEY = __JOURNEY_DATA__;
+    </script>
+    <script src="atlas_cases.js?v=3"></script>
+    <script src="atlas_plot.js?v=3"></script>
+    <script src="c4_ui.js?v=3"></script>
+    <script src="atlas_ui.js?v=3"></script>
+  </body>
 </html>

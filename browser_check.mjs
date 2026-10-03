@@ -8,7 +8,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const cache=path.join(os.homedir(),'.cache','ms-playwright');
-const candidates=fs.existsSync(cache)?fs.readdirSync(cache).filter(n=>n.startsWith('chromium-')).map(n=>path.join(cache,n,'chrome-linux64','chrome')):[];
+const candidates=fs.existsSync(cache)?fs.readdirSync(cache).filter(n=>n.startsWith('chromium-')).flatMap(n=>['chrome-linux64','chrome-linux'].map(platform=>path.join(cache,n,platform,'chrome'))):[];
 const chrome=process.env.ATLAS_CHROME||candidates.find(p=>fs.existsSync(p));
 if(!chrome)throw new Error('Set ATLAS_CHROME to a Chromium executable.');
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'wave-atlas-browser-'));
@@ -36,8 +36,8 @@ try{
     if(await evaluate('document.readyState === "complete" && typeof ATLAS !== "undefined"'))break;
     await new Promise(resolve=>setTimeout(resolve,100));
   }
-  const counts=await evaluate('({slices:ATLAS.length,pairs:ATLAS.filter(m=>m.primary).length,cards:document.querySelectorAll(".card").length})');
-  if(counts.slices!==20||counts.pairs!==13||counts.cards!==20)throw new Error(JSON.stringify(counts));
+  const counts=await evaluate('({slices:ATLAS.length,pairs:ATLAS.filter(m=>m.primary).length,cases:document.querySelectorAll(".case-card").length,images:document.querySelectorAll("img").length})');
+  if(counts.slices!==20||counts.pairs!==13||counts.cases!==7||counts.images!==0)throw new Error(JSON.stringify(counts));
   const ks=await evaluate(`(()=>{
     choose(ATLAS.findIndex(m=>m.slug==='n2_p4_kawahara'));
     document.getElementById('profileMode').value='axis';document.getElementById('profileMode').dispatchEvent(new Event('change'));
@@ -48,7 +48,7 @@ try{
     if(Math.abs(period-6.901643615339256)>1e-9)throw Error('Wrong smooth KS period');
     toParameter(-19);if(lastProfile.mode!=='axis'||!lastProfile.poles.length)throw Error('KS outside interval should be singular');
     toParameter(-13);if(lastProfile.mode!=='regular'||lastProfile.poles.length)throw Error('KS did not return to its pole-free slice');
-    toParameter(-18);if(lastProfile.mode!=='regular'||lastProfile.period!==null||lastProfile.constant)throw Error('Wrong KS pulse limit');
+    toParameter(-18);if(lastProfile.mode!=='regular'||lastProfile.period!==null||lastProfile.constant||Math.abs(lastProfile.amplitude-160/9)>1e-8)throw Error('Wrong KS pulse limit');
     toParameter(-8);if(!lastProfile.constant||Math.abs(lastProfile.mean-4)>1e-10)throw Error('Wrong KS constant limit');
     document.getElementById('profileMode').value='axis';document.getElementById('profileMode').dispatchEvent(new Event('change'));
     document.querySelector('[data-parameter="-13"]').click();
@@ -97,8 +97,8 @@ try{
     check(Math.abs(frame().points[0].g2-.125)<1e-12&&Math.abs(frame().points[0].g3-.001)<1e-12,'free lattice input');
     change('profileMode','axis');
     el('c4-focus').checked=true;el('c4-focus').dispatchEvent(new Event('change'));
-    const scene=location.hash,before=C4Panel.state();
-    change('c4-preset','sk');location.hash=scene;
+    saveSceneLink(true);const scene=location.hash,before=C4Panel.state();
+    change('c4-preset','sk');await new Promise(resolve=>setTimeout(resolve,250));location.hash=scene;
     await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     check(JSON.stringify(C4Panel.state())===JSON.stringify(before)&&lastProfile.mode==='axis','scene round trip');
     const beforeInvalid=JSON.stringify(C4Panel.state());change('c4-C','1/0');
@@ -113,9 +113,61 @@ try{
   const links=await evaluate('Array.from(document.querySelectorAll("a[href]")).map(a=>a.getAttribute("href"))');
   const missing=Array.from(new Set(links)).filter(href=>!href.startsWith('#')&&!/^https?:/.test(href)).filter(href=>!fs.existsSync(path.resolve(here,href.split('#')[0])));
   if(missing.length)throw new Error('Missing local links: '+JSON.stringify(missing));
-  await evaluate(`choose(ATLAS.findIndex(m=>m.slug==='n2_p4_kawahara'))`);
+  const usability=await evaluate(`(async()=>{
+    const check=(ok,message)=>{if(!ok)throw Error('Usability: '+message);};
+    const cases=[];
+    for(const scene of CASES){document.querySelector('[data-case="'+scene.id+'"]').click();check(mode==='discover'&&model().slug===scene.slug&&lastProfile?.mode==='regular','curated '+scene.id);check(document.getElementById('currentTitle').textContent===scene.name,'case title');check(document.querySelector('[data-case="'+scene.id+'"]').getAttribute('aria-pressed')==='true','case selected state');cases.push(scene.id);}
+    document.getElementById('lab-tab').click();check(mode==='lab'&&!document.getElementById('c4-controls').hidden,'lab controls');
+    C4Panel.oneGap();
+    const input=document.getElementById('parameter-input');input.value='1/6';input.dispatchEvent(new Event('change'));
+    check(Math.abs(effectiveFrame().t-1/6)<1e-14&&Math.abs(WaveMath.at(effectiveFrame().points[selected].profile,0)[0]-.5)<1e-10,'exact free-coordinate input');
+    const snapshot=JSON.stringify(C4Panel.state());input.value='nonsense';input.dispatchEvent(new Event('change'));check(document.getElementById('parameter-status').textContent&&JSON.stringify(C4Panel.state())===snapshot,'invalid parameter');
+    selectCase('kk');document.getElementById('lab-tab').click();check(JSON.stringify(C4Panel.state())===snapshot,'custom equation lost on mode switch');
+    const beforeReset=effectiveFrame().t;zoom(.75);document.getElementById('reset-scene').click();check(JSON.stringify(C4Panel.state())===snapshot&&effectiveFrame().t===beforeReset&&latticeView===null,'view reset changed the equation');
+    selectCase('kawahara');input.value='13/6';input.dispatchEvent(new Event('change'));check(lastProfile.constant,'fraction parameter');
+    toParameter(0);const amplitude=lastProfile.amplitude,mean=lastProfile.mean;
+    document.getElementById('window-mode').value='fixed';document.getElementById('window-span').value='.01';drawWave();
+    check(!lastProfile.constant&&Math.abs(lastProfile.amplitude-amplitude)<1e-10&&Math.abs(lastProfile.mean-mean)<1e-10,'statistics depend on window');
+    preferredProfileMode='axis';drawWave();check(lastProfile.re.some(Number.isFinite)&&lastProfile.range.every(Number.isFinite),'short singular window');
+    document.getElementById('window-span').value='1e-20';drawWave();check(lastProfile.empty&&lastProfile.range.every(Number.isFinite),'empty singular window');preferredProfileMode='regular';
+    const complex=ATLAS.find(m=>m.slug==='n3_p4_cubic_positive').frames.find(f=>f.t>2.51).points.find(p=>p.profile.kind==='halfroot'&&p.profile.geometry.type==='rect').profile;
+    const tinyComplex=WaveMath.generate(complex,'regular',2,101,1e-20);check(tinyComplex.anyImag&&tinyComplex.mean===null&&tinyComplex.amplitude===null,'complex phase lost in short window');
+    document.getElementById('window-span').value='1000000';drawWave();check(lastProfile.width<=20*effectiveFrame().points[selected].profile.geometry.period,'periodic window not limited');
+    fitLattice();check(model().tracks.flatMap(t=>t.points.filter(Boolean)).every(p=>latticeFrame.inside(latticeFrame.px(p[0]),latticeFrame.py(p[1]))),'fit omitted finite curves');
+    document.getElementById('wave').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));check(pinnedZ>0,'keyboard wave probe');document.getElementById('probe-clear').click();
+    selectCase('kawahara');selectJourney(0);const initialPeriod=lastProfile.period;selectJourney(159);const longPeriod=lastProfile.period;
+    check(longPeriod>90&&longPeriod>7*initialPeriod&&lastProfile.mean!==null,'finite long period lost to rounding');
+    selectJourney(160);check(lastProfile.period===null&&lastProfile.mean===null&&!lastProfile.constant&&Math.abs(lastProfile.amplitude-35/12)<1e-12,'pulse endpoint');
+    document.getElementById('probe-input').value='0';document.getElementById('probe-input').dispatchEvent(new Event('change'));
+    check(pinnedZ===0&&document.getElementById('probe-value').textContent.includes('-0.916667'),'coordinate probe');
+    zoom(.75);saveSceneLink(true);const saved=location.hash;selectCase('ks');await new Promise(resolve=>setTimeout(resolve,250));location.hash=saved;
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    check(journeyIndex===160&&pinnedZ===0&&latticeView!==null&&lastProfile.period===null,'journey scene round trip '+JSON.stringify({journeyIndex,pinnedZ,latticeView,period:lastProfile.period,hash:location.hash,saved}));
+    selectJourney(0);document.getElementById('journey-play').click();await new Promise(resolve=>setTimeout(resolve,280));check(journeyIndex>0&&journeyPlaying,'play transition');document.getElementById('journey-play').click();check(!journeyPlaying,'pause transition');
+    return {cases,exact_fraction_input:true,invalid_input:true,custom_equation_memory:true,view_reset_preserves_equation:true,periodic_window_limit:true,short_singular_window:true,empty_singular_window:true,short_complex_window:true,fit_all:true,keyboard_probe:true,window_independent_statistics:true,initial_period:initialPeriod,long_period:longPeriod,pulse:true,coordinate_probe:true,scene_round_trip:true,play_pause:true};
+  })()`);
+  // Dispatch real browser input away from the currently selected markers.
+  const curveTarget=await evaluate(`(()=>{selectCase('kawahara');document.querySelector('.lattice-section').scrollIntoView({block:'center',behavior:'instant'});const i=AtlasPlot.closestFrame(model(),.85),p=model().frames[i].points.find(p=>p.branch===0),r=canvas.getBoundingClientRect();return {x:r.left+latticeFrame.px(p.g2),y:r.top+latticeFrame.py(p.g3),parameter:model().frames[i].t,branch:p.branch};})()`);
+  await call('Input.dispatchMouseEvent',{type:'mouseMoved',x:curveTarget.x,y:curveTarget.y});
+  if(!await evaluate('!document.getElementById("lattice-tooltip").hidden'))throw Error('Missing curve hover tooltip');
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',x:curveTarget.x,y:curveTarget.y,button:'left',clickCount:1});
+  await call('Input.dispatchMouseEvent',{type:'mouseReleased',x:curveTarget.x,y:curveTarget.y,button:'left',clickCount:1});
+  const picked=await evaluate('({parameter:effectiveFrame().t,branch:selectedBranch})');
+  if(Math.abs(picked.parameter-curveTarget.parameter)>1e-10||picked.branch!==curveTarget.branch)throw Error('Curve picking: '+JSON.stringify({curveTarget,picked}));
+  const probeTarget=await evaluate(`(()=>{selectCase('kawahara');document.querySelector('.wave-section').scrollIntoView({block:'center',behavior:'instant'});const r=document.getElementById('wave').getBoundingClientRect(),z=1.25,v=WaveMath.at(effectiveFrame().points[selected].profile,z)[0];return {x:r.left+waveFrame.px(z),y:r.top+waveFrame.py(v),z,v};})()`);
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',x:probeTarget.x,y:probeTarget.y,button:'left',clickCount:1});
+  await call('Input.dispatchMouseEvent',{type:'mouseReleased',x:probeTarget.x,y:probeTarget.y,button:'left',clickCount:1});
+  if(!await evaluate(`pinnedZ!==null&&Math.abs(pinnedZ-${probeTarget.z})<lastProfile.width/waveFrame.w`))throw Error('Wave click did not pin the coordinate: '+JSON.stringify(await evaluate('({pinnedZ,rect:document.getElementById("wave").getBoundingClientRect().toJSON()})')));
+  const panTarget=await evaluate(`(()=>{const r=canvas.getBoundingClientRect();return {x:r.left+latticeFrame.P.l+latticeFrame.w/2,y:r.top+latticeFrame.P.t+latticeFrame.h/2};})()`);
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',...panTarget,button:'left',clickCount:1});
+  await call('Input.dispatchMouseEvent',{type:'mouseMoved',x:panTarget.x+30,y:panTarget.y+15,buttons:1});
+  await call('Input.dispatchMouseEvent',{type:'mouseReleased',x:panTarget.x+30,y:panTarget.y+15,button:'left',clickCount:1});
+  if(!await evaluate('latticeView!==null&&Math.abs(latticeView[0][0]-model().limits[0][0])>1e-6'))throw Error('Pan did not change the lattice view');
+  await evaluate(`selectCase('kawahara');scrollTo({top:0,behavior:'instant'})`);
   const screenshots=path.join(here,'data','browser');fs.mkdirSync(screenshots,{recursive:true});
   const screen=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(screenshots,'desktop.png'),Buffer.from(screen.data,'base64'));
+  await evaluate(`selectJourney(160);document.querySelector('.explorer').scrollIntoView({block:'start'})`);
+  const pulseScreen=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(screenshots,'pulse-desktop.png'),Buffer.from(pulseScreen.data,'base64'));
   await evaluate(`choose(ATLAS.findIndex(m=>m.slug==='c4'));document.querySelector('.explorer').scrollIntoView()`);
   const c4screen=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(screenshots,'c4-desktop.png'),Buffer.from(c4screen.data,'base64'));
   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
@@ -123,11 +175,18 @@ try{
   const mobile=await evaluate('({width:innerWidth,document:document.documentElement.scrollWidth,cards:document.querySelectorAll(".card").length})');
   if(mobile.document>391||mobile.width>391)throw new Error('Mobile horizontal overflow: '+JSON.stringify(mobile));
   const mobileScreen=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(screenshots,'mobile.png'),Buffer.from(mobileScreen.data,'base64'));
+  await evaluate(`selectCase('kawahara');scrollTo({top:0,behavior:'instant'})`);
+  await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+  const discoveryMobile=await evaluate('({width:innerWidth,document:document.documentElement.scrollWidth})');
+  if(discoveryMobile.document>391)throw Error('Discovery mobile overflow: '+JSON.stringify(discoveryMobile));
+  const discoveryScreen=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(screenshots,'discover-mobile.png'),Buffer.from(discoveryScreen.data,'base64'));
+  const accessibility=await evaluate(`(()=>{const unnamed=Array.from(document.querySelectorAll('button,input,select,canvas')).filter(el=>!el.closest('[hidden]')).filter(el=>!el.textContent.trim()&&!el.getAttribute('aria-label')&&!el.labels?.length&&!el.getAttribute('aria-labelledby'));return {unnamed:unnamed.map(el=>el.id),tabs:document.querySelectorAll('[role=tab][aria-selected=true]').length};})()`);
+  if(accessibility.unnamed.length||accessibility.tabs!==1)throw Error('Accessible control names: '+JSON.stringify(accessibility));
   if(errors.length)throw new Error('JavaScript errors: '+JSON.stringify(errors));
-  const report={status:'PASS',public_url:process.env.ATLAS_URL||null,...counts,checked,kawahara,limits,ks,sceneLinks,c4,mobile,missing_links:missing,javascript_errors:errors};
+  const report={status:'PASS',public_url:process.env.ATLAS_URL||null,...counts,checked,kawahara,limits,ks,sceneLinks,c4,usability,curve_picking:picked,wave_picking:true,pan:true,mobile,discoveryMobile,accessibility,missing_links:missing,javascript_errors:errors};
   const reportPath=process.env.ATLAS_URL?'live_site_check.json':'browser_check.json';
   fs.writeFileSync(path.join(here,'data',reportPath),JSON.stringify(report,null,2)+'\n');
-  console.log('PASS: 20 explorer modes, C4 coefficients/resonances/pulse/links/CSV, KS regression, Kawahara endpoints, desktop and mobile.');
+  console.log('PASS: 20 modes, 7 curated cases, real curve/wave clicks, pan, precise pulse transition, full-period statistics, coefficient edits, scene links, desktop/mobile, accessible controls.');
 }finally{
   if(socket)socket.close();proc.kill();
   await new Promise(resolve=>proc.once('exit',resolve));

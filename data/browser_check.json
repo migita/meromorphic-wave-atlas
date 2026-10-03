@@ -3,13 +3,14 @@
   "public_url": null,
   "slices": 20,
   "pairs": 13,
-  "cards": 20,
+  "cases": 7,
+  "images": 0,
   "checked": [
     {
       "slug": "n2_p2_kdv",
       "readouts": [
         {
-          "count": "One fixed equation · infinitely many energy levels",
+          "count": "One fixed equation · a continuous family of energy levels",
           "profile": {
             "mode": "axis",
             "constant": false,
@@ -17,7 +18,7 @@
           }
         },
         {
-          "count": "One fixed equation · infinitely many energy levels",
+          "count": "One fixed equation · a continuous family of energy levels",
           "profile": {
             "mode": "regular",
             "constant": false,
@@ -25,7 +26,7 @@
           }
         },
         {
-          "count": "One fixed equation · infinitely many energy levels",
+          "count": "One fixed equation · a continuous family of energy levels",
           "profile": {
             "mode": "axis",
             "constant": false,
@@ -39,7 +40,7 @@
       "slug": "n3_p2_mkdv",
       "readouts": [
         {
-          "count": "One fixed equation · infinitely many energy levels",
+          "count": "One fixed equation · a continuous family of energy levels",
           "profile": {
             "mode": "axis",
             "constant": false,
@@ -47,7 +48,7 @@
           }
         },
         {
-          "count": "One fixed equation · infinitely many energy levels",
+          "count": "One fixed equation · a continuous family of energy levels",
           "profile": {
             "mode": "regular",
             "constant": false,
@@ -55,7 +56,7 @@
           }
         },
         {
-          "count": "One fixed equation · infinitely many energy levels",
+          "count": "One fixed equation · a continuous family of energy levels",
           "profile": {
             "mode": "regular",
             "constant": false,
@@ -614,7 +615,7 @@
   "ks": {
     "parameter": -13,
     "period": 6.901643615339256,
-    "mean": 2.9572734735695017,
+    "mean": 2.957273473569504,
     "poles": 0,
     "family_view_reset": true,
     "shortcuts": true
@@ -633,10 +634,52 @@
     "invalid_input": true,
     "csv_rows": 962
   },
+  "usability": {
+    "cases": [
+      "kawahara",
+      "kdv",
+      "ks",
+      "lax",
+      "sk",
+      "kk",
+      "swift"
+    ],
+    "exact_fraction_input": true,
+    "invalid_input": true,
+    "custom_equation_memory": true,
+    "view_reset_preserves_equation": true,
+    "periodic_window_limit": true,
+    "short_singular_window": true,
+    "empty_singular_window": true,
+    "short_complex_window": true,
+    "fit_all": true,
+    "keyboard_probe": true,
+    "window_independent_statistics": true,
+    "initial_period": 12.041060093269845,
+    "long_period": 95.12989878042752,
+    "pulse": true,
+    "coordinate_probe": true,
+    "scene_round_trip": true,
+    "play_pause": true
+  },
+  "curve_picking": {
+    "parameter": 0.846222222222222,
+    "branch": 0
+  },
+  "wave_picking": true,
+  "pan": true,
   "mobile": {
     "width": 390,
     "document": 390,
-    "cards": 20
+    "cards": 0
+  },
+  "discoveryMobile": {
+    "width": 390,
+    "document": 390
+  },
+  "accessibility": {
+    "unnamed": [],
+    "tabs": 1
   },
   "missing_links": [],
   "javascript_errors": []

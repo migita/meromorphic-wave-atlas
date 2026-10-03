@@ -72,7 +72,7 @@
     lines.push(...frame.messages);
     if(C4.presetKey(frame.coefficients)==='cubic'&&frame.coefficients.a00===0)lines.push('The two opposite-sign affine profiles use the same lattice and are listed separately. The twisted cubic sector is available in the pure-power atlas.');
     el('notes').replaceChildren(...lines.map(text=>{const p=document.createElement('p');p.textContent=text;return p;}));
-    const p=document.createElement('p'),a=document.createElement('a');a.href='figures/c4.png';a.textContent='C4 overview ↗';p.append(a,document.createTextNode(' · '));
+    const p=document.createElement('p'),a=document.createElement('a');a.href='data/c4_formulas.json';a.textContent='C4 coefficient identities ↗';p.append(a,document.createTextNode(' · '));
     const button=document.createElement('button');button.className='text-button';button.textContent='Download this sweep as CSV';
     button.onclick=()=>{const url=URL.createObjectURL(new Blob([C4.csv(ATLAS[index])],{type:'text/csv;charset=utf-8'})),link=document.createElement('a');link.href=url;link.download='c4-'+state.sweep+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};p.append(button);el('notes').append(p);
   }

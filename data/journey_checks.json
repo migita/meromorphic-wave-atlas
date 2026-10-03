@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "states": 161,
+  "profile_values": 1127,
+  "exact_pulse_identity": true,
+  "short_window_statistics": true,
+  "max_profile_error": 1.7791323969618134e-14,
+  "max_scaled_ode_residual": 6.175615574477433e-16,
+  "max_relative_period_error": 0.0,
+  "max_mean_error": 3.3306690738754696e-15,
+  "max_amplitude_error": 8.881784197001252e-16
+}

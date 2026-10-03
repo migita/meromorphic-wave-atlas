@@ -4,9 +4,9 @@
   "samples": 1194,
   "ode_checks": 1183,
   "ill_conditioned_fractional_jets": 11,
-  "max_ode_residual": 9.397722245185262e-07,
+  "max_ode_residual": 9.393424068076095e-07,
   "max_power_error": 1.6709380456284289e-10,
-  "max_curve_error": 2.7546877287234475e-10,
+  "max_curve_error": 2.754687430938427e-10,
   "period_checks": 1038,
   "zero_continuation_checks": 35,
   "failures": []
