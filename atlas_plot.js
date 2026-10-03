@@ -4,14 +4,14 @@
  */
 const AtlasPlot = (() => {
   const palette = [
-    [56, 133, 126],
-    [87, 139, 172],
-    [155, 120, 163],
-    [201, 146, 100],
+    [0, 139, 149],
+    [42, 108, 217],
+    [132, 73, 214],
+    [226, 103, 48],
   ];
-  const ink = "#253c3e",
-    muted = "#77837d",
-    grid = "#e8ebe2";
+  const ink = "#18323f",
+    muted = "#596c78",
+    grid = "#e7edf0";
   const fmt = (x) =>
     x == null
       ? "—"
@@ -105,7 +105,7 @@ const AtlasPlot = (() => {
   }
   function axes(f) {
     const { c, W, H, P, w, h, px, py, tx, ty, ex, ey, xlabel, ylabel } = f;
-    c.strokeStyle = "#cbd3c6";
+    c.strokeStyle = "#c2d0d8";
     c.lineWidth = 1;
     c.beginPath();
     c.moveTo(P.l, P.t);
@@ -168,7 +168,7 @@ const AtlasPlot = (() => {
         { length: 201 },
         (_, i) => Math.max(0, xmin) + ((xmax - Math.max(0, xmin)) * i) / 200,
       );
-      c.fillStyle = "#eaf0e580";
+      c.fillStyle = "#e5f6ee80";
       c.beginPath();
       xs.forEach((x, i) =>
         i
@@ -181,7 +181,7 @@ const AtlasPlot = (() => {
       c.closePath();
       c.fill();
       for (const sign of [-1, 1]) {
-        c.strokeStyle = "#a9b4a9";
+        c.strokeStyle = "#839aa4";
         c.lineWidth = 1;
         c.setLineDash([4, 3]);
         c.beginPath();
@@ -248,13 +248,13 @@ const AtlasPlot = (() => {
       const x = px(p.g2),
         y = py(p.g3);
       if (i === selected) {
-        c.fillStyle = "#267d7818";
+        c.fillStyle = "#007f881c";
         c.beginPath();
         c.arc(x, y, 11, 0, 2 * Math.PI);
         c.fill();
       }
-      c.fillStyle = i === selected ? ink : "#c27d54";
-      c.strokeStyle = "#fffefa";
+      c.fillStyle = i === selected ? ink : "#d95f2b";
+      c.strokeStyle = "#ffffff";
       c.lineWidth = 2;
       c.beginPath();
       c.arc(x, y, i === selected ? 5 : 4, 0, Math.PI * 2);
@@ -314,7 +314,7 @@ const AtlasPlot = (() => {
       { c, P, w, h, px, py } = f;
     clip(f);
     if (p.mean !== null) {
-      c.strokeStyle = "#afbbac";
+      c.strokeStyle = "#8298a1";
       c.lineWidth = 1;
       c.setLineDash([3, 4]);
       c.beginPath();
@@ -324,13 +324,13 @@ const AtlasPlot = (() => {
       c.setLineDash([]);
     }
     const lines = [
-      [p.re, "#267d78", []],
-      ...(p.anyImag ? [[p.im, "#917ab3", [5, 3]]] : []),
-      ...(reference ? [[refs, "#c27d54", [5, 4]]] : []),
+      [p.re, "#007f88", []],
+      ...(p.anyImag ? [[p.im, "#8052d6", [5, 3]]] : []),
+      ...(reference ? [[refs, "#d95f2b", [5, 4]]] : []),
     ];
     for (const [values, col, dash] of lines) {
       c.strokeStyle = col;
-      c.lineWidth = col === "#267d78" ? 2.5 : 1.8;
+      c.lineWidth = col === "#007f88" ? 2.5 : 1.8;
       c.lineJoin = "round";
       c.setLineDash(dash);
       c.beginPath();
@@ -349,7 +349,7 @@ const AtlasPlot = (() => {
       c.stroke();
       c.setLineDash([]);
     }
-    c.strokeStyle = "#bc8f77";
+    c.strokeStyle = "#d95f2b";
     c.lineWidth = 1;
     c.setLineDash([3, 4]);
     for (const x of p.poles) {
@@ -363,7 +363,7 @@ const AtlasPlot = (() => {
       const val = WaveMath.at(spec, pinned, p.mode);
       if (val) {
         c.fillStyle = ink;
-        c.strokeStyle = "#fffefa";
+        c.strokeStyle = "#ffffff";
         c.lineWidth = 2;
         c.beginPath();
         c.arc(px(pinned), py(val[0]), 4.5, 0, 2 * Math.PI);

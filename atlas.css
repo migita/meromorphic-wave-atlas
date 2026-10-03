@@ -1,13 +1,21 @@
 :root {
   color-scheme: light;
-  --paper: #f5f3ed;
-  --panel: #fffefa;
-  --ink: #253c3e;
-  --muted: #707f7c;
-  --line: #dedfd5;
-  --teal: #267d78;
-  --soft: #e8f1ec;
-  --orange: #c27d54;
+  --paper: #f7f7f4;
+  --panel: #ffffff;
+  --ink: #18323f;
+  --muted: #596c78;
+  --line: #d7dfe2;
+  --teal: #007f88;
+  --soft: #e0f4f2;
+  --orange: #d95f2b;
+  --violet: #8052d6;
+  --parameter-gradient: linear-gradient(
+    90deg,
+    #008b95,
+    #2a6cd9,
+    #8449d6,
+    #e26730
+  );
   --serif: Georgia, "Times New Roman", serif;
   --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: ui-monospace, Consolas, monospace;
@@ -203,7 +211,7 @@ h3 {
 }
 .outline-button:hover {
   background: var(--soft);
-  border-color: #b9cdc2;
+  border-color: #80c6c8;
 }
 .quiet-button {
   background: none;
@@ -248,11 +256,11 @@ h3 {
   background: transparent;
 }
 .case-card:hover {
-  background: #efeee6;
+  background: #edf2f4;
 }
 .case-card[aria-pressed="true"] {
   background: var(--soft);
-  border-color: #c7d9ce;
+  border-color: #8bcbd0;
 }
 .case-number {
   color: var(--muted);
@@ -430,7 +438,7 @@ select {
   border: 1px solid var(--line);
   border-radius: 11px;
   padding: 24px 26px 12px;
-  box-shadow: 0 4px 20px #253c3e03;
+  box-shadow: 0 4px 20px #18323f03;
 }
 .explorer-heading {
   display: flex;
@@ -446,8 +454,8 @@ select {
 .badge {
   font-size: 10px;
   color: var(--muted);
-  background: #f1f3ec;
-  border: 1px solid #e5e8dd;
+  background: #f0f4f6;
+  border: 1px solid #dfe7ec;
   border-radius: 15px;
   padding: 4px 10px;
   margin-top: 3px;
@@ -464,7 +472,7 @@ select {
   flex-direction: column;
   gap: 5px;
   padding: 13px 16px;
-  background: #f4f5ee;
+  background: #f0f5f7;
   border-radius: 6px;
   margin: 16px 0 18px;
 }
@@ -506,12 +514,12 @@ input[type="range"] {
 }
 input[type="range"]::-webkit-slider-runnable-track {
   height: 3px;
-  background: linear-gradient(90deg, #38857e, #578bac, #9b78a3, #c99264);
+  background: var(--parameter-gradient);
   border-radius: 5px;
 }
 input[type="range"]::-moz-range-track {
   height: 3px;
-  background: linear-gradient(90deg, #38857e, #578bac, #9b78a3, #c99264);
+  background: var(--parameter-gradient);
   border-radius: 5px;
 }
 input[type="range"]::-webkit-slider-thumb {
@@ -561,14 +569,14 @@ input[type="range"]::-moz-range-thumb {
 .shortcuts button:hover,
 .shortcuts button[aria-pressed="true"] {
   background: var(--soft);
-  border-color: #b8d0c1;
+  border-color: #80c6c8;
   color: var(--teal);
 }
 .journey {
   margin-top: 17px;
   padding: 13px 15px;
-  background: #f1f4ec;
-  border: 1px solid #e1e8d9;
+  background: #eef8f6;
+  border: 1px solid #c9e7e2;
   border-radius: 7px;
 }
 .journey-heading {
@@ -639,7 +647,7 @@ input[type="range"]::-moz-range-thumb {
   flex: none;
 }
 .wave-status.singular {
-  color: #a57758;
+  color: #b84e23;
 }
 .plots {
   display: grid;
@@ -722,24 +730,24 @@ canvas {
   background: var(--teal);
 }
 .swatch.locus {
-  background: linear-gradient(90deg, #38857e, #578bac, #9b78a3, #c99264);
+  background: var(--parameter-gradient);
 }
 .swatch.cusp {
-  background: #a9b4a9;
+  background: #839aa4;
 }
 .swatch.oval {
   height: 8px;
-  background: #eaf0e5;
-  border: 1px solid #dae4d3;
+  background: #e5f6ee;
+  border: 1px solid #b9e0cf;
 }
 .swatch.imag {
-  background: #917ab3;
+  background: var(--violet);
 }
 .swatch.reference {
   background: var(--orange);
 }
 .swatch.mean {
-  background: #acb8ad;
+  background: #8298a1;
 }
 .plot-hint {
   font-size: 9px;
@@ -750,12 +758,12 @@ canvas {
   position: absolute;
   z-index: 3;
   pointer-events: none;
-  background: #253c3ef5;
+  background: #18323ff5;
   border-radius: 6px;
   color: var(--panel);
   padding: 9px 12px;
   font: 10px/1.65 var(--mono);
-  box-shadow: 0 3px 12px #253c3e20;
+  box-shadow: 0 3px 12px #18323f20;
   max-width: 210px;
   white-space: nowrap;
 }
@@ -780,7 +788,7 @@ canvas {
 .crosshair {
   position: absolute;
   width: 1px;
-  background: #567c6e55;
+  background: #007f8855;
   pointer-events: none;
 }
 .wave-controls {
@@ -1123,7 +1131,7 @@ footer a {
   .case-card {
     grid-template-columns: 17px minmax(0, 1fr);
     padding: 10px 8px;
-    background: #efeee6;
+    background: #edf2f4;
   }
   .case-arrow {
     display: none;
