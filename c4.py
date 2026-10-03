@@ -134,9 +134,15 @@ def figure():
 
 
 def main():
-    data=verify();fig=figure()
-    for ext in ['png','svg','pdf']:fig.savefig(HERE/'figures'/('c4.'+ext),dpi=170)
-    plt.close(fig)
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--figures',action='store_true',help='Also regenerate the archived C4 static plate.')
+    args=parser.parse_args()
+    data=verify()
+    if args.figures:
+        fig=figure()
+        for ext in ['png','svg','pdf']:fig.savefig(HERE/'figures'/('c4.'+ext),dpi=170)
+        plt.close(fig)
     print('PASS:',len(data['checks']),'symbolic family/stratum checks, generic coefficient identity, and the Lax sech² pulse.')
 
 

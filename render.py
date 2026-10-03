@@ -1,4 +1,5 @@
-"""Render the reproducible PNG/SVG/PDF atlas and its offline slider gallery."""
+"""Build interactive atlas data. Use --figures for legacy publication plates."""
+import argparse
 import csv
 import json
 import math
@@ -386,6 +387,9 @@ def gallery_data(collection):
 
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--figures',action='store_true',help='Also regenerate the archived static plates and PDF book.')
+    args=parser.parse_args()
     models=build_models()
     (HERE/"figures").mkdir(exist_ok=True)
     (HERE/"data"/"models.json").write_text(json.dumps(serializable(models),ensure_ascii=False,indent=2)+"\n")
@@ -393,31 +397,32 @@ def main():
     for m in models:
         data=sample(m);collection.append(data);write_csv(data)
         print("SAMPLED",m["slug"],len(data["frames"]),"parameter values",flush=True)
-    with PdfPages(HERE/"g2g3_atlas.pdf",metadata={"Title":"Travelling waves in the plane of lattices","Author":"Computational companion to the meromorphic travelling-wave papers"}) as pdf:
-        for primary,slug in [(True,"atlas_overview"),(False,"companion_overview")]:
-            fig=poster(collection,primary)
-            fig.savefig(HERE/"figures"/(slug+".png"),dpi=145)
-            fig.savefig(HERE/"figures"/(slug+".pdf"))
-            pdf.savefig(fig);plt.close(fig)
-        for data in collection:
-            fig=plate(data);slug=data["model"]["slug"]
-            for extension in ("png","svg","pdf"):
-                fig.savefig(HERE/"figures"/(slug+"."+extension),dpi=170)
-            pdf.savefig(fig);plt.close(fig)
-            print("RENDERED",slug,flush=True)
-        from c4 import figure as c4_figure
-        fig=c4_figure();pdf.savefig(fig);plt.close(fig)
+    if args.figures:
+        with PdfPages(HERE/"g2g3_atlas.pdf",metadata={"Title":"Travelling waves in the plane of lattices","Author":"Computational companion to the meromorphic travelling-wave papers"}) as pdf:
+            for primary,slug in [(True,"atlas_overview"),(False,"companion_overview")]:
+                fig=poster(collection,primary)
+                fig.savefig(HERE/"figures"/(slug+".png"),dpi=145)
+                fig.savefig(HERE/"figures"/(slug+".pdf"))
+                pdf.savefig(fig);plt.close(fig)
+            for data in collection:
+                fig=plate(data);slug=data["model"]["slug"]
+                for extension in ("png","svg","pdf"):
+                    fig.savefig(HERE/"figures"/(slug+"."+extension),dpi=170)
+                pdf.savefig(fig);plt.close(fig)
+                print("RENDERED",slug,flush=True)
+            from c4 import figure as c4_figure
+            fig=c4_figure();pdf.savefig(fig);plt.close(fig)
     payload=gallery_data(collection)
     from profiles import attach_profiles
     attach_profiles(payload)
     (HERE/"data"/"atlas.json").write_text(json.dumps(payload,separators=(",",":"),ensure_ascii=False,allow_nan=False)+"\n")
     # The template needs no server, CDN, package installation, or network.
-    template=(HERE/"gallery_template.html").read_text()
-    (HERE/"index.html").write_text(template.replace("__ATLAS_DATA__",json.dumps(payload,separators=(",",":"),ensure_ascii=False,allow_nan=False)))
+    from journeys import compile_site,build_journey
+    compile_site(payload,build_journey())
     (HERE/"data"/"coverage.json").write_text(json.dumps({"pairs":[[m["n"],m["p"]] for m in models if m["primary"]],
         "excluded_pairs":[[n,p] for p in range(2,7) for n in range(2,8) if p%(n-1)],"slices":len(models),
         "sample_counts":{d["model"]["slug"]:sum(len(f["points"]) for f in d["frames"]) for d in collection}},indent=2)+"\n")
-    print("WROTE index.html, 22-page g2g3_atlas.pdf, 19 pure-power plates and the C4 overview",flush=True)
+    print("WROTE interactive index.html, atlas data, CSVs and validation fixtures",flush=True)
 
 
 if __name__=="__main__":main()

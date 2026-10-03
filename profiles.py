@@ -5,6 +5,7 @@ curves. The browser evaluates Jacobi functions and continues the characters
 through zeros. High precision keeps nearly singular lattices distinguishable.
 """
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 import mpmath as mp
@@ -194,12 +195,12 @@ def rebuild():
     datafile=HERE/"data"/"atlas.json"
     if datafile.exists():payload=json.loads(datafile.read_text())
     else:
-        html=(HERE/"index.html").read_text();start=html.index("const ATLAS=")+len("const ATLAS=")
+        html=(HERE/"index.html").read_text();start=re.search(r"\bconst\s+ATLAS\s*=\s*",html).end()
         payload,_=json.JSONDecoder().raw_decode(html[start:])
     total=attach_profiles(payload)
     datafile.write_text(json.dumps(payload,separators=(",",":"),ensure_ascii=False,allow_nan=False)+"\n")
-    template=(HERE/"gallery_template.html").read_text()
-    (HERE/"index.html").write_text(template.replace("__ATLAS_DATA__",json.dumps(payload,separators=(",",":"),ensure_ascii=False,allow_nan=False)))
+    from journeys import compile_site
+    compile_site(payload)
     print(f"Compiled {total} selected-wave profiles",flush=True)
 
 

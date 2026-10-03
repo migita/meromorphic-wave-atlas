@@ -22,7 +22,7 @@
   function cellScale(g){return g.period||8/Math.sqrt(g.G||g.H||1);}
   function nearPole(g,x,mode,tolerance=1e-9){
     if(mode==='regular')return false;
-    if(g.period){const t=mod(x+g.period/2,g.period)-g.period/2;return Math.abs(t)<tolerance*g.period;}
+    if(g.period){const t=Math.abs(x%g.period);return Math.min(t,g.period-t)<tolerance*g.period;}
     return Math.abs(x)<tolerance*cellScale(g);
   }
   function base(g,x,mode){
@@ -126,22 +126,28 @@
     if(spec.order%2)return 1;
     return ((spec.zeros[mode]?1:0)+(mode==='axis'?1:0))%2?2:1;
   }
-  function generate(spec,preferred='regular',cells=2,count=801){
+  function generate(spec,preferred='regular',cells=2,count=801,windowWidth=null){
     const g=spec.geometry,mode=actualMode(spec,preferred),basePeriod=g.period;
-    const width=basePeriod?basePeriod*cells:2*cellScale(g);
+    const width=windowWidth!==null?windowWidth:basePeriod?basePeriod*cells:2*cellScale(g);
     const x=[],re=[],im=[],poles=[];let anyImag=false;
+    const poleTolerance=Math.min(.0015,.75*width/(count-1)/cellScale(g));
     if(mode==='axis'){
       if(basePeriod){for(let k=Math.ceil(-width/(2*basePeriod));k<=Math.floor(width/(2*basePeriod));k++)poles.push(k*basePeriod);}
       else poles.push(0);
     }
     for(let j=0;j<count;j++){
       const xx=-width/2+width*j/(count-1);x.push(xx);
-      const v=nearPole(g,xx,mode,.0015)?null:at(spec,xx,mode);
+      const v=nearPole(g,xx,mode,poleTolerance)?null:at(spec,xx,mode);
       re.push(v?v[0]:null);im.push(v?v[1]:null);
     }
     const realValues=re.filter(Number.isFinite),imagValues=im.filter(Number.isFinite);
-    const maximum=Math.max(...realValues.map(Math.abs),...imagValues.map(Math.abs),1e-300);
-    anyImag=Math.max(...imagValues.map(Math.abs),0)>maximum*1e-9;
+    // Classify the whole slice, even if the window is centred on an imaginary zero.
+    const probes=mode==='regular'?Array.from({length:9},(_,i)=>at(spec,cellScale(g)*(.071+i/9),mode)).filter(Boolean):[];
+    const maximum=Math.max(...realValues.map(Math.abs),...imagValues.map(Math.abs),...probes.flat().map(Math.abs),1e-300);
+    anyImag=Math.max(...imagValues.map(Math.abs),...probes.map(v=>Math.abs(v[1])),0)>maximum*1e-9;
+    const constant=mode==='regular'&&g.type==='rect'&&g.D===0;
+    let period=basePeriod?basePeriod*periodMultiplier(spec,mode):null,mean=null,amplitude=null;
+    if(!realValues.length)return {x,re,im,mode,anyImag,poles,clipped:false,constant,period:constant?null:period,mean,amplitude,range:[-1,1],width,empty:true};
     const all=anyImag?realValues.concat(imagValues):realValues;
     let low=Math.min(...all),high=Math.max(...all),clipped=false;
     if(mode==='axis'&&poles.length){
@@ -150,17 +156,37 @@
       const span=high-low||Math.max(Math.abs(high),1e-6);low-=span*.12;high+=span*.12;clipped=true;
     }
     let span=high-low;
-    const variation=Math.max(Math.max(...realValues)-Math.min(...realValues),Math.max(...imagValues)-Math.min(...imagValues));
-    const constant=mode==='regular'&&variation<1e-9*Math.max(Math.abs(high),1e-20);
+    // All constructed profiles are nonconstant on a noncollapsed real oval.
+    // Decide from the oval, so a tiny window or amplitude cannot erase a period.
     if(span<1e-12*Math.max(Math.abs(high),1e-20)){span=Math.max(Math.abs(high)*.2,1e-4);low-=span/2;high+=span/2;}
     else{low-=span*.1;high+=span*.1;}
-    let period=basePeriod?basePeriod*periodMultiplier(spec,mode):null,mean=null,amplitude=null;
     if(mode==='regular'&&!anyImag){
       amplitude=Math.max(...realValues)-Math.min(...realValues);
-      if(basePeriod){
-        const n=1024;let sum=0;
-        for(let j=0;j<n;j++)sum+=at(spec,(j+.37)*period/n,mode)[0];
-        mean=sum/n;
+      const polynomialX=spec.kind==='polynomial'&&spec.terms.every(([i,j])=>j===0&&i<=3)&&g.type==='rect';
+      if(basePeriod||windowWidth!==null||!polynomialX){
+        // Statistics use a full wave period even when the displayed window is
+        // shorter. A finite window must not silently change the amplitude.
+        const n=2048,statWidth=period||2*cellScale(g),step=statWidth/n,values=[];let sum=0,minimum=Infinity,maximum=-Infinity;
+        for(let j=0;j<n;j++){const value=at(spec,(j+.37)*step-(period?0:statWidth/2),mode)[0];values.push(value);sum+=value;minimum=Math.min(minimum,value);maximum=Math.max(maximum,value);}
+        // Refine extrema between samples for profiles involving Y or a character.
+        if(!polynomialX)for(let j=period?0:1;j<(period?n:n-1);j++){
+          const before=values[(j+n-1)%n],value=values[j],after=values[(j+1)%n];
+          const sign=value>before&&value>after?1:value<before&&value<after?-1:0;
+          if(!sign)continue;
+          const centre=(j+.37)*step-(period?0:statWidth/2);let left=centre-step,right=centre+step;
+          for(let k=0;k<48;k++){const a=left+(right-left)/3,b=right-(right-left)/3;if(sign*at(spec,a,mode)[0]<sign*at(spec,b,mode)[0])left=a;else right=b;}
+          const refined=at(spec,(left+right)/2,mode)[0];minimum=Math.min(minimum,refined);maximum=Math.max(maximum,refined);
+        }
+        if(basePeriod)mean=sum/n;amplitude=maximum-minimum;
+      }
+      // For profiles polynomial in X, extrema are available directly on the
+      // closed real oval, including its hyperbolic endpoints at infinity.
+      if(polynomialX){
+        const coeff=[0,0,0,0];for(const [i,j,c] of spec.terms)coeff[i]+=c;
+        const values=[g.e[2],g.e[1]],lo=g.e[2],hi=g.e[1];
+        if(coeff[3]){const disc=4*coeff[2]**2-12*coeff[3]*coeff[1];if(disc>=0)for(const sign of [-1,1]){const v=(-2*coeff[2]+sign*Math.sqrt(disc))/(6*coeff[3]);if(v>=lo&&v<=hi)values.push(v);}}
+        else if(coeff[2]){const v=-coeff[1]/(2*coeff[2]);if(v>=lo&&v<=hi)values.push(v);}
+        const extrema=values.map(X=>spec.scale*polynomial(spec.terms,X,0));amplitude=Math.max(...extrema)-Math.min(...extrema);
       }
       if(constant){mean=realValues[0];amplitude=0;period=null;}
     }
